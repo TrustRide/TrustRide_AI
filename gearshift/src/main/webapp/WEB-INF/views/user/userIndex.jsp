@@ -68,33 +68,6 @@
 
 </main>
 
-<!--  채널톡 스크립트 (고정 아이콘 포함) -->
-<%--<a href="/chat">--%>
-<%--  <script>--%>
-<%--    (function(){--%>
-<%--      var w=window;--%>
-<%--      if(w.ChannelIO){return w.console.error("ChannelIO script included twice.");}--%>
-<%--      var ch=function(){ch.c(arguments);};ch.q=[];ch.c=function(args){ch.q.push(args);};--%>
-<%--      w.ChannelIO=ch;--%>
-<%--      function l(){--%>
-<%--        if(w.ChannelIOInitialized){return;}--%>
-<%--        w.ChannelIOInitialized=true;--%>
-<%--        var s=document.createElement("script");--%>
-<%--        s.type="text/javascript";s.async=true;--%>
-<%--        s.src="https://cdn.channel.io/plugin/ch-plugin-web.js";--%>
-<%--        var x=document.getElementsByTagName("script")[0];--%>
-<%--        if(x.parentNode){x.parentNode.insertBefore(s,x);}--%>
-<%--      }--%>
-<%--      if(document.readyState==="complete"){l();}--%>
-<%--      else{w.addEventListener("DOMContentLoaded",l);w.addEventListener("load",l);}--%>
-<%--    })();--%>
-
-<%--    ChannelIO('boot', {--%>
-<%--      "pluginKey": "c908baf0-72dc-4f83-886e-e07a18a35760"--%>
-<%--    });--%>
-<%--  </script>--%>
-<%--</a>--%>
-
 <!--  푸터 영역 -->
 <%@ include file="/WEB-INF/views/user/include/footer.jsp" %>
 
