@@ -12,6 +12,36 @@
   <link rel="stylesheet" href="<c:url value='/resources/css/user/userIndex.css' />">
   <link rel="stylesheet" href="<c:url value='/resources/css/user/header.css' />">
   <link rel="stylesheet" href="<c:url value='/resources/css/user/footer.css' />">
+  <style>
+    #chatbot-fab {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 60px;
+      height: 60px;
+      background-color: #9a88f8;
+      color: white;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      font-size: 30px;
+      z-index: 9998;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    #chatbot-iframe {
+      position: fixed;
+      bottom: 100px;
+      right: 24px;
+      width: 360px;
+      height: 500px;
+      border: none;
+      display: none;
+      z-index: 9999;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+      border-radius: 12px;
+    }
+  </style>
 </head>
 <body>
 
@@ -30,36 +60,40 @@
     </div>
   </section>
 
+  <!-- 챗봇 버튼 -->
+  <button id="chatbot-fab">💬</button>
 
+  <!-- 챗봇 iframe -->
+  <iframe id="chatbot-iframe" src="${pageContext.request.contextPath}/chatbot/index.html"></iframe>
 
 </main>
 
 <!--  채널톡 스크립트 (고정 아이콘 포함) -->
-<a href="/chat">
-  <script>
-    (function(){
-      var w=window;
-      if(w.ChannelIO){return w.console.error("ChannelIO script included twice.");}
-      var ch=function(){ch.c(arguments);};ch.q=[];ch.c=function(args){ch.q.push(args);};
-      w.ChannelIO=ch;
-      function l(){
-        if(w.ChannelIOInitialized){return;}
-        w.ChannelIOInitialized=true;
-        var s=document.createElement("script");
-        s.type="text/javascript";s.async=true;
-        s.src="https://cdn.channel.io/plugin/ch-plugin-web.js";
-        var x=document.getElementsByTagName("script")[0];
-        if(x.parentNode){x.parentNode.insertBefore(s,x);}
-      }
-      if(document.readyState==="complete"){l();}
-      else{w.addEventListener("DOMContentLoaded",l);w.addEventListener("load",l);}
-    })();
+<%--<a href="/chat">--%>
+<%--  <script>--%>
+<%--    (function(){--%>
+<%--      var w=window;--%>
+<%--      if(w.ChannelIO){return w.console.error("ChannelIO script included twice.");}--%>
+<%--      var ch=function(){ch.c(arguments);};ch.q=[];ch.c=function(args){ch.q.push(args);};--%>
+<%--      w.ChannelIO=ch;--%>
+<%--      function l(){--%>
+<%--        if(w.ChannelIOInitialized){return;}--%>
+<%--        w.ChannelIOInitialized=true;--%>
+<%--        var s=document.createElement("script");--%>
+<%--        s.type="text/javascript";s.async=true;--%>
+<%--        s.src="https://cdn.channel.io/plugin/ch-plugin-web.js";--%>
+<%--        var x=document.getElementsByTagName("script")[0];--%>
+<%--        if(x.parentNode){x.parentNode.insertBefore(s,x);}--%>
+<%--      }--%>
+<%--      if(document.readyState==="complete"){l();}--%>
+<%--      else{w.addEventListener("DOMContentLoaded",l);w.addEventListener("load",l);}--%>
+<%--    })();--%>
 
-    ChannelIO('boot', {
-      "pluginKey": "c908baf0-72dc-4f83-886e-e07a18a35760"
-    });
-  </script>
-</a>
+<%--    ChannelIO('boot', {--%>
+<%--      "pluginKey": "c908baf0-72dc-4f83-886e-e07a18a35760"--%>
+<%--    });--%>
+<%--  </script>--%>
+<%--</a>--%>
 
 <!--  푸터 영역 -->
 <%@ include file="/WEB-INF/views/user/include/footer.jsp" %>
@@ -99,7 +133,17 @@
   }
 
   setInterval(changeImage, 5000);
-  
+
+
+  <!-- 챗봇 -->
+  const fab = document.getElementById('chatbot-fab');
+  const iframe = document.getElementById('chatbot-iframe');
+
+  fab.addEventListener('click', () => {
+    const isVisible = iframe.style.display === 'block';
+    iframe.style.display = isVisible ? 'none' : 'block';
+  });
+
 </script>
 </body>
 </html>
