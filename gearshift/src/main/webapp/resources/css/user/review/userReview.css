@@ -1,0 +1,278 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif;
+    background-color: #fff;
+    margin: 20px;
+}
+
+.review-summary {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 10px 0;
+    border-top: 2px solid #000;
+    border-bottom: 2px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.product-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.product {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 8px;
+    flex-wrap: wrap;
+    background-color: #fff;
+    transition: background-color 0.3s;
+}
+
+.product.reviewed {
+    background-color: #f4f4f4;
+}
+
+.product-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+    min-width: 250px;
+}
+
+.product-img {
+    width: 60px;
+    height: auto;
+}
+
+.product-text {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.product-name {
+    font-weight: bold;
+}
+
+.product-date {
+    font-size: 14px;
+    color: gray;
+}
+
+.review-button {
+    padding: 8px 12px;
+    border: 1px solid #007aff;
+    background-color: #fff;
+    color: #007aff;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.review-button:hover {
+    background-color: #f0f8ff;
+}
+
+/* 기존 버튼 그룹 스타일 추가 */
+.button-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* 리뷰 보기 버튼 */
+.view-button {
+    padding: 8px 12px;
+    border: 1px solid #555;
+    background-color: #eee;
+    color: #333;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.view-button:hover {
+    background-color: #ddd;
+}
+
+/* 리뷰 삭제 버튼 (빨간빛 도는 스타일) */
+.delete-button {
+    padding: 8px 12px;
+    border: 1px solid #e63946;
+    background-color: #ffe5e5;
+    color: #e63946;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.delete-button:hover {
+    background-color: #ffd6d6;
+}
+
+@media (max-width: 600px) {
+    .product {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .product-info {
+        flex-direction: row;
+    }
+
+    .button-group {
+        width: 100%;
+        justify-content: flex-end;
+      }
+
+    .review-button,
+    .view-buttonm,
+    .delete-button {
+        align-self: flex-end;
+    }
+}
+
+
+
+
+/* 모달 창 */
+
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.modal {
+    background: white;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh; /* 최대 높이 제한 */
+    overflow-y: auto; /* 스크롤 추가 */
+    border-radius: 10px;
+    padding: 20px;
+    position: relative;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* 스크롤 바 커스터마이징 (선택사항) */
+.modal::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 10px;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0; transform: scale(0.9);}
+    to {opacity: 1; transform: scale(1);}
+}
+
+.image-container img {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.description {
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.comment-section {
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.comment {
+    margin-bottom: 10px;
+}
+
+.author {
+    font-weight: bold;
+}
+
+.text {
+    margin-top: 5px;
+    font-size: 13px;
+}
+
+.back-link {
+    margin-top: 20px;
+    padding: 8px 14px;
+    background-color: #007aff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.close-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: transparent;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.stars {
+    color: #FFD700;
+    font-size: 20px;
+    white-space: nowrap;
+}
+
+.description {
+    margin-top: 10px;
+    font-size: 15px;
+    color: #333;
+}
+
+.meta-info {
+    text-align: right;
+    color: #777;
+    font-size: 14px;
+    margin-top: 4px;
+    margin-bottom: 16px;
+}
+
+.meta-info .writer::after {
+    content: "  ·  ";
+}
+
+.review-main {
+    margin-left: 250px; /* ✅ 사이드바 너비만큼 띄우기 */
+    padding: 20px;
+}
+
+main {
+    min-height: calc(100vh - 140px); /* header + footer 대충 합쳐서 */
+    padding: 40px 20px 100px; /* 위, 양옆, 아래 */
+    box-sizing: border-box;
+}

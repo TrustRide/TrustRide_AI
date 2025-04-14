@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="inquiryComment">
+
+    <insert id="insertComment" parameterType="com.fastcampus.gearshift.dto.InquiryCommentDto">
+        INSERT INTO inquiry_comment (
+            comment_content, inquiry_id, admin_id, is_deleted, created_at, updated_at
+        ) VALUES (
+                     #{commentContent}, #{inquiryId}, #{adminId}, 0, NOW(), NOW()
+                 )
+    </insert>
+
+    <select id="getCommentsByInquiryId" parameterType="int" resultType="com.fastcampus.gearshift.dto.InquiryCommentDto">
+        SELECT *
+        FROM inquiry_comment
+        WHERE inquiry_id = #{inquiryId} AND is_deleted = 0
+        ORDER BY created_at ASC
+    </select>
+
+</mapper>

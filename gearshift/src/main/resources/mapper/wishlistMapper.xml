@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fastcampus.gearshift.wishlistMapper">
+
+    <!-- 1) 찜 등록 -->
+    <insert id="insertWishlist" parameterType="map">
+        INSERT INTO wishlist (user_id, car_info_id)
+        VALUES (#{userId}, #{carInfoId});
+    </insert>
+
+    <!-- 2) 찜 해제/삭제 -->
+    <delete id="deleteWishlist" parameterType="map">
+        DELETE FROM wishlist
+        WHERE user_id = #{userId}
+          AND car_info_id = #{carInfoId};
+    </delete>
+
+    <!-- 3) 해당 차가 찜되었는지 여부 확인 -->
+    <select id="isWished" parameterType="map" resultType="boolean">
+        SELECT CASE WHEN COUNT(*) > 0 THEN TRUE ELSE FALSE END
+        FROM wishlist
+        WHERE user_id = #{userId}
+          AND car_info_id = #{carInfoId}
+    </select>
+
+    <!-- 4) 사용자의 찜 목록 (CarListDto 형태로 JOIN) -->
+    <select id="selectWishlistCars" parameterType="int"
+            resultType="com.fastcampus.gearshift.dto.CarListDto">
+        SELECT
+            ci.car_info_id,
+            info.model_name,
+            info.manufacture_year,
+            info.mileage,
+            info.transmission,
+            info.car_price,
+            info.fuel_type,
+            img.image_url AS thumbnail_url
+        FROM wishlist w
+        JOIN car_information ci ON w.car_info_id = ci.car_info_id
+        INNER JOIN information info ON ci.car_info_id = info.car_info_id
+        INNER join image img ON img.car_info_id = info.car_info_id
+        WHERE w.user_id = #{userId}
+          AND img.is_thumbnail = true
+          AND ci.is_deleted = false
+          AND info.is_deleted = false
+        ORDER BY w.wishlist_id DESC
+    </select>
+
+
+
+
+</mapper>

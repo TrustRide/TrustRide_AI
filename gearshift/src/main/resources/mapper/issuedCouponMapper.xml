@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="issuedCouponMapper">
+
+    <!-- 특정 사용자(UserId)의 보유 쿠폰 목록 조회 -->
+    <select id="findByUserId" resultType="issuedCouponDto">
+
+        SELECT ic.issued_id,
+               ic.issue_date,
+               ic.is_used,
+               ic.used_date,
+               ic.coupon_id,
+               ic.user_id,
+               c.coupon_name,
+               c.discount_value,
+               c.discount_amount,
+               c.min_order_amount
+        FROM issued_coupon ic
+                 JOIN coupon c ON ic.coupon_id = c.coupon_id
+        WHERE ic.user_id = #{userId}
+        ORDER BY ic.issue_date DESC;
+
+    </select>
+
+    <!-- 쿠폰 사용 처리 -->
+    <update id="useIssuedCoupon">
+        UPDATE issued_coupon
+        SET is_used = TRUE, used_date = NOW()
+        WHERE issued_id = #{issuedId} AND user_id = #{userId} AND is_used = FALSE
+    </update>
+
+    <!-- 전체 사용자에게 선택된 쿠폰 지급 -->
+    <insert id="insertIssuedCoupons" parameterType="java.util.List">
+        INSERT INTO issued_coupon (issue_date, is_used, used_date, coupon_id, user_id)
+        VALUES
+        <foreach collection="list" item="coupon" separator=",">
+            (NOW(), FALSE, NULL, #{coupon.couponId}, #{coupon.userId})
+        </foreach>
+    </insert>
+
+
+    <select id="findAllUserIds" resultType="Integer">
+        SELECT user_id
+        FROM user
+
+    </select>
+
+
+
+</mapper>

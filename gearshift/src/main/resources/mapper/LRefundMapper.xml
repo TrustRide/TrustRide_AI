@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fastcampus.gearshift.dao.LRefundMapper">
+
+    <!-- 주문 취소 가능내역 조회 -->
+    <!--    <select id="getRefundAbleList" resultType="LRefundAbleListDTO">-->
+    <!--        SELECT-->
+    <!--        i.model_name , o.order_id-->
+    <!--        FROM orders o-->
+    <!--        JOIN payment p ON o.order_id = p.order_id-->
+    <!--        JOIN delivery d ON o.order_id = d.order_id-->
+    <!--        JOIN information i ON o.car_info_id = i.car_info_id-->
+    <!--        WHERE o.user_id = #{userId}-->
+    <!--        AND p.payment_status = '결제완료'-->
+    <!--        AND d.delivery_status = '배송완료'-->
+    <!--        AND o.order_status = '주문완료'-->
+    <!--        AND o.refund_status is Null-->
+    <!--        ORDER BY order_completed_date DESC-->
+    <!--    </select>-->
+
+    <!--  환불목록 조회  -->
+    <select id="getRefundAbleList" resultType="LRefundAbleListDTO">
+        SELECT
+            i.model_name,
+            o.order_id,
+            img.image_url AS thumbnailImageUrl
+        FROM orders o
+                 JOIN payment p ON o.order_id = p.order_id
+                 JOIN delivery d ON o.order_id = d.order_id
+                 JOIN information i ON o.car_info_id = i.car_info_id
+                 LEFT JOIN image img ON o.car_info_id = img.car_info_id AND img.is_thumbnail = true
+        WHERE o.user_id = #{userId}
+          AND p.payment_status = '결제완료'
+          AND d.delivery_status = '배송완료'
+          AND o.order_status = '주문완료'
+          AND o.refund_status IS NULL
+        ORDER BY o.order_completed_date DESC
+    </select>
+    <!--  상품 상세 조회  -->
+    <!--    <select id="selectRefundProduct" resultType="LRefundDTO">-->
+    <!--        SELECT order_id, order_amount, total_amount-->
+    <!--        FROM orders-->
+    <!--        WHERE order_id = #{orderId}-->
+
+    <!--    </select>-->
+
+    <!--  선택한 상품 환불 상세조회  -->
+    <select id="selectRefundProduct" resultType="LRefundDTO">
+        SELECT
+            o.order_id,
+            o.order_amount,
+            o.total_amount,
+            img.image_url AS thumbnailImageUrl,
+            o.refund_status
+
+        FROM orders o
+                 JOIN car_information ci ON o.car_info_id = ci.car_info_id
+                 JOIN information i ON ci.car_info_id = i.car_info_id
+
+                 LEFT JOIN image img ON ci.car_info_id = img.car_info_id AND img.is_thumbnail = true
+
+        WHERE o.order_id = #{orderId}
+    </select>
+
+    <!-- 선택한 상품 환불 등록 -->
+    <insert id="registerRefund" parameterType="LRefundDTO">
+        INSERT INTO refund(
+            refund_reason,
+            refund_completed_at,
+            order_id,
+            refund_status
+        ) VALUES (
+                     #{refundReason},
+                     NOW(),
+                     #{orderId},
+                     #{refundStatus}
+                 )
+    </insert>
+
+    <!--  주문테이블의 환불상태 설정  -->
+    <update id="modifyOrder" parameterType="LRefundDTO">
+        UPDATE orders
+        SET refund_status='환불대기중'
+        WHERE order_id = #{orderId}
+    </update>
+
+    <!--  환불 목록 조회  -->
+    <select id="getRefundList" resultType="LRefundDTO">
+        SELECT o.order_id, o.total_amount,o.refund_status, i.model_name,img.image_url AS thumbnailImageUrl
+        FROM orders o
+                 JOIN information i
+                      ON o.car_info_id = i.car_info_id
+                 LEFT JOIN image img ON o.car_info_id = img.car_info_id AND img.is_thumbnail = true
+        WHERE o.user_id = #{userId}
+          AND o.refund_status IN ('환불대기중','환불확인중','환불거부','환불완료')
+    </select>
+
+
+</mapper>

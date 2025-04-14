@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fastcampus.gearshift.dao.DeliveryMapper">
+
+    <!-- 배송 정보 저장 -->
+    <insert id="insert" parameterType="DeliveryDTO" >
+
+        INSERT INTO delivery (
+            delivery_fee,
+            delivery_started_at,
+            driver_phone_number,
+            delivery_request,
+            preferred_date,
+            delivery_driver_name,
+            order_id,
+            delivery_status
+        )
+        VALUES (
+                   #{deliveryFee},
+                   NOW(),
+                   #{driverPhoneNumber},
+                   #{deliveryRequest},
+                   #{preferredDate},
+                   #{deliveryDriverName},
+                   #{orderId},
+                   #{deliveryStatus}
+               )
+    </insert>
+</mapper>

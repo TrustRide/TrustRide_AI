@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="adminMapper">
+
+    <insert id="insertUser" parameterType="com.fastcampus.gearshift.dto.AdminDto">
+        INSERT INTO admin (admin_id, admin_password, admin_name, department, position, admin_email, admin_phone, gender)
+        VALUES (#{adminId}, #{adminPassword}, #{adminName}, #{department}, #{position}, #{adminEmail}, #{adminPhone}, #{gender})
+    </insert>
+
+    <select id="selectAllUsers" resultType="com.fastcampus.gearshift.dto.AdminDto">
+        SELECT
+            admin_id
+            , admin_name
+            , department
+            , position
+            , admin_email
+            , admin_phone
+            , gender
+            , is_deleted
+        FROM admin
+        ORDER BY admin_id DESC
+    </select>
+
+    <select id="countAllUsers" resultType="int">
+        SELECT COUNT(admin_id)
+        FROM admin
+    </select>
+
+    <select id="selectUsersWithPaging" resultType="com.fastcampus.gearshift.dto.AdminDto">
+        SELECT
+            admin_id
+             , admin_name
+             , department
+             , position
+             , admin_email
+             , admin_phone
+             , CASE
+                   WHEN gender = 'M' THEN '남'
+                   WHEN gender = 'F' THEN '여'
+                END AS gender
+             , is_deleted
+        FROM admin
+        ORDER BY admin_id DESC
+            LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="findByEmail" parameterType="String" resultType="com.fastcampus.gearshift.dto.AdminDto">
+        SELECT *
+        FROM admin WHERE admin_email = #{email}
+    </select>
+
+    <update id="deleteUser" parameterType="int">
+        UPDATE admin
+        SET is_deleted = 1
+        WHERE admin_id = #{adminId}
+    </update>
+
+    <update id="activateUser" parameterType="int">
+        UPDATE admin
+        SET is_deleted = 0
+        WHERE admin_id = #{adminId}
+    </update>
+
+</mapper>

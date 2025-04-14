@@ -1,0 +1,311 @@
+/* ✅ 전체 구조 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    display: flex;
+    gap: 40px;
+    justify-content: space-between;
+    width: 90%;
+    max-width: 1200px;
+
+    /* ✅ 여기가 핵심 */
+    margin: 140px auto 100px; /* 헤더 아래 140px, 푸터 위 100px 여백 */
+
+    flex: 1;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    box-sizing: border-box;
+}
+
+/* ✅ 왼쪽: form 영역 */
+.form-section {
+    flex: 1 1 65%;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-top: 20px;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+}
+
+/* 주소 */
+.address_wrap {
+    margin-top: 20px;
+}
+
+.address_button {
+    border: 1px solid #ccc;
+    padding: 12px;
+    margin-top: 5px;
+    border-radius: 5px;
+    background: white;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* 면허 */
+.license-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* 약관 */
+.terms-container {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 30px;
+}
+
+.terms-main, .terms-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    flex-wrap: nowrap;
+}
+
+.terms-box:last-child {
+    border-bottom: none;
+}
+
+.terms-box label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.terms-box a {
+    color: darkred;
+    font-size: 14px;
+    text-decoration: underline;
+    white-space: nowrap;
+}
+
+/* 제출 버튼 */
+.submit-btn {
+    background: darkred;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    border: none;
+    width: 100%;
+    margin-top: 30px;
+    font-size: 16px;
+}
+
+/* ✅ 오른쪽: 요약 영역 */
+.summary-section {
+    flex: 1 1 30%;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+    min-width: 260px;
+}
+
+.order-box {
+    text-align: center;
+}
+
+.order-box img {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    object-fit: cover;
+}
+
+.info-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.info-button {
+    padding: 12px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.info-button:hover {
+    background: #f1f1f1;
+}
+
+/* ✅ 진행바 */
+.order-progress {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.step-title {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.progress-bar-wrapper {
+    background-color: #edf0f5;
+    border-radius: 10px;
+    height: 8px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    background-color: #b5091b;
+    height: 100%;
+    width: 50%;
+    border-radius: 10px;
+}
+
+.step-count {
+    text-align: right;
+    font-size: 14px;
+    color: #555;
+    margin-top: 4px;
+}
+
+/* ✅ 모달 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 500px;
+    background: white;
+    padding: 20px;
+    text-align: left;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content {
+    position: relative;
+    padding: 20px;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.confirm-button {
+    width: 100%;
+    background-color: darkred;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.confirm-button:hover {
+    background-color: #a00;
+}
+
+/* 약관 테이블 */
+.terms-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.terms-table th,
+.terms-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.terms-table th {
+    background: #f4f4f4;
+    font-weight: bold;
+}
+
+.terms-main input[type="checkbox"] {
+    margin: 0;
+    transform: translateY(1px);
+}
+
+/* 가격 요약 박스 */
+.price-summary {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.price-summary h3 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.price-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.price-item .label {
+    font-weight: bold;
+    color: #555;
+}
+
+.price-item .value {
+    color: #333;
+}
+
+.price-item.total .value {
+    font-size: 20px;
+    font-weight: bold;
+    color: red;
+}

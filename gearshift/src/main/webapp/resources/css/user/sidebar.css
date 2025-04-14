@@ -1,0 +1,41 @@
+/* sidebar.css */
+
+/* ✅ 사이드바 제목 */
+.mypage-section-title {
+    padding: 12px 16px;
+    font-weight: bold;
+    background: #f1f1f1;
+}
+
+/* ✅ 사이드바 링크 */
+.mypage-link {
+    padding: 8px 16px;
+    display: block;
+    color: #333;
+    text-decoration: none;
+}
+
+.mypage-link:hover {
+    background-color: #ddd;
+}
+
+/* ✅ 사이드바 위치 조정 */
+nav.w3-sidebar {
+    top: 80px !important;  /* 헤더 높이와 맞춤 */
+    height: calc(100% - 80px);
+    position: fixed;
+    left: 0;
+    width: 250px;
+    overflow-y: auto;
+}
+
+
+/* ✅ 본문 내용 영역 박스 */
+.content-box {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+

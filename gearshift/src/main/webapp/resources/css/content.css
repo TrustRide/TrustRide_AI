@@ -1,0 +1,61 @@
+/* content.css */
+
+/* 본문 영역 공통 마진 및 패딩 처리 */
+.w3-main {
+    margin-left: 250px;
+    margin-top: 60px;
+    padding: 40px;
+    background-color: #f8f9fb;
+    min-height: calc(100vh - 60px - 120px); /* header + footer 고려 */
+}
+
+.content-box {
+    background: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.content-box h2 {
+    margin-bottom: 30px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.form-row label {
+    width: 100px;
+    font-weight: bold;
+}
+
+.form-row input[type="password"] {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-row button {
+    padding: 8px 16px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.form-row button:hover {
+    background-color: #555;
+}
+
+
+body.w3-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}

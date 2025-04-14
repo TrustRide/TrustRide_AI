@@ -1,0 +1,158 @@
+.container-detail {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 60px auto;
+    gap: 30px;
+}
+
+.payment-detail-section {
+    flex: 2;
+    background: #f9f9f9;
+    padding: 24px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.payment-detail-section h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.payment-detail-section h2 {
+    font-size: 28px;
+    color: #222;
+    margin-bottom: 20px;
+}
+
+.payment-detail-section > main > div {
+    margin-bottom: 20px;
+}
+
+.payment-detail-section main div div {
+    margin: 6px 0;
+    font-size: 14px;
+}
+
+.order-summary-section {
+    flex: 1;
+}
+
+.order-box {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.order-box h3 {
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.order-box p {
+    font-size: 14px;
+    color: #555;
+    margin: 6px 0 12px;
+}
+
+.info-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.info-button {
+    padding: 12px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.info-button:hover {
+    background: #f1f1f1;
+}
+
+.price-summary {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.price-summary h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.price-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+}
+
+.price-item.total {
+    font-weight: bold;
+    color: #b40000;
+    font-size: 16px;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+}
+
+.submit-button {
+    background-color: #b40000;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    width: 100%;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 40px;
+}
+
+#accountModal button {
+    background: #b40000;
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* ✅ 진행바 */
+.order-progress {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.step-title {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.progress-bar-wrapper {
+    background-color: #edf0f5;
+    border-radius: 10px;
+    height: 8px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    background-color: #b5091b;
+    height: 100%;
+    width: 50%; /* 2단계 (50%) */
+    border-radius: 10px;
+}
+
+.step-count {
+    text-align: right;
+    font-size: 14px;
+    color: #555;
+    margin-top: 4px;
+}

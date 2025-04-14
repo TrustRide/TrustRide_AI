@@ -1,0 +1,137 @@
+/* 기본 리셋 */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* 전체 컨테이너 - 사이드바 고려 */
+.wishlist-main {
+    max-width: 1100px;
+    margin-left: 250px; /* ✅ fixed sidebar 공간 확보 */
+    padding: 30px 20px 100px; /* footer 겹침 방지 여유 */
+}
+
+/* 헤더 */
+.wishlist-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.wishlist-header h1 {
+    color: #333;
+    font-size: 26px;
+}
+
+.wishlist-header p {
+    font-size: 18px;
+    color: #888;
+}
+
+/* 카드 그리드 */
+.wishlist-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+/* 개별 차량 카드 */
+.car-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: all 0.3s;
+    text-align: center;
+    padding-bottom: 15px;
+}
+
+.car-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* 이미지 */
+.car-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+/* 텍스트 정보 */
+.car-info {
+    padding: 15px;
+}
+
+.car-info h2 {
+    font-size: 20px;
+    margin: 10px 0 5px;
+}
+
+.car-info p {
+    color: #777;
+    font-size: 14px;
+    margin: 0 0 10px;
+}
+
+.car-info .price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #e60023;
+}
+
+/* 찜 해제 버튼 */
+.unwish-form button {
+    background: none;
+    border: none;
+    font-size: 22px;
+    color: #e60023;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: transform 0.2s;
+}
+
+.unwish-form button:hover {
+    transform: scale(1.2);
+}
+
+/* 반응형 */
+@media (max-width: 1024px) {
+    .wishlist-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .wishlist-main {
+        margin-left: 0; /* 모바일에서는 sidebar 없으므로 */
+        padding: 20px;
+    }
+
+    .wishlist-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .car-info h2 {
+        font-size: 18px;
+    }
+
+    .car-info p {
+        font-size: 13px;
+    }
+
+    .car-info .price {
+        font-size: 16px;
+    }
+}
+
+main {
+    min-height: calc(100vh - 140px); /* header + footer 대충 합쳐서 */
+    padding: 40px 20px 100px; /* 위, 양옆, 아래 */
+    box-sizing: border-box;
+}

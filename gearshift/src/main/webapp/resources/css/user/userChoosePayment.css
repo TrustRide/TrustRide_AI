@@ -1,0 +1,179 @@
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0; /* ✔️ 위쪽 여백 제거 */
+}
+
+.container {
+    display: flex;
+    gap: 40px;
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 30px;
+    padding-top: 8px;
+    padding-bottom: 400px; /* ✅ 푸터와 겹치지 않게 여백 추가 */
+    align-items: flex-start;
+}
+
+.payment-section {
+    flex: 2;
+}
+
+.order-guide h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.total-price-box {
+    background: #f2f4f8;
+    padding: 16px;
+    border-radius: 6px;
+    margin-bottom: 30px;
+}
+
+.total-price-box ul {
+    padding-left: 18px;
+    margin: 10px 0;
+}
+
+.action-buttons {
+    margin-top: 12px;
+}
+
+.alt-btn {
+    background: none;
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    margin-right: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.payment-method-section h3 {
+    font-size: 20px;
+    margin-bottom: 12px;
+}
+
+.payment-options {
+    display: flex;
+    gap: 12px;
+    margin: 12px 0;
+}
+
+.payment-option {
+    border: 2px solid #ccc;
+    padding: 16px;
+    border-radius: 6px;
+    flex: 1;
+    text-align: center;
+    cursor: pointer;
+}
+
+.payment-option.selected {
+    border-color: #c30;
+    background: #fff3f3;
+}
+
+.submit-button {
+    margin-top: 20px;
+    padding: 14px;
+    background-color: darkred;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+}
+
+.right-section {
+    width: 340px;
+    flex-shrink: 0;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.right-section img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.info-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.info-button {
+    padding: 12px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.info-button:hover {
+    background: #f1f1f1;
+}
+
+.price-summary {
+    margin-top: 20px;
+}
+
+.price-summary h3 {
+    margin-bottom: 15px;
+}
+
+.price-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+}
+
+.price-item.total {
+    font-weight: bold;
+    font-size: 16px;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    color: #c30;
+}
+
+/* ✅ 진행바 */
+.order-progress {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.step-title {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.progress-bar-wrapper {
+    background-color: #edf0f5;
+    border-radius: 10px;
+    height: 8px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    background-color: #b5091b;
+    height: 100%;
+    width: 50%; /* 2단계 (50%) */
+    border-radius: 10px;
+}
+
+.step-count {
+    text-align: right;
+    font-size: 14px;
+    color: #555;
+    margin-top: 4px;
+}

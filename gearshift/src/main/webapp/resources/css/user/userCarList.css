@@ -1,0 +1,190 @@
+/* ====================  전체 공통 ==================== */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    padding-bottom: 60px;
+}
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+/* ====================  HEADER 영역 ==================== */
+
+
+/* ==================== BANNER 영역 ==================== */
+
+
+.banner {
+    width: 100%;
+    height: 100px;
+    background: red;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+
+/* ====================  카테고리 필터 영역 ==================== */
+.car-page-layout {
+    display: flex;
+    align-items: center;
+    max-width: 1200px;
+    margin-left: 40px; /* ← 왼쪽 여백을 더 줘서 우측으로 이동 */
+    padding: 40px 20px;
+    gap: 40px;
+    min-height: 600px;
+}
+
+.category-container {
+    width: 250px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    overflow-y: auto;
+    max-height: 80vh;
+    flex-shrink: 0;
+}
+.category-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.category-tier-1,
+.category-tier-2,
+.category-tier-3 {
+    padding: 10px;
+    cursor: pointer;
+}
+.category-tier-1 {
+    font-weight: bold;
+    background-color: #f8f8f8;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    text-align: center;
+}
+.category-tier-2 {
+    border-left: 3px solid #ddd;
+    padding-left: 15px;
+}
+.category-tier-3 {
+    color: #666;
+    border-left: 3px solid #ccc;
+    padding-left: 25px;
+}
+.hidden {
+    display: none;
+}
+
+
+/* ====================  차량 목록 영역 ==================== */
+.car-section {
+    flex: 1;
+}
+
+.car-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+    padding: 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.car-card {
+    position: relative;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease;
+    height: 420px;
+}
+.car-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+.car-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+.car-card-content {
+    padding: 14px 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.car-card-content h2 {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.car-card-content h4 {
+    font-size: 13px;
+    color: #777;
+    margin: 6px 0;
+}
+.car-card-content h1 {
+    font-size: 18px;
+    color: #d8232a;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* 뱃지 (타임딜/무료배송 등) */
+.badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #d8232a;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+
+/* ====================  페이지네이션 ==================== */
+.pagination {
+    text-align: center;
+    margin: 20px 0;
+}
+.pagination a {
+    display: inline-block;
+    padding: 8px 12px;
+    margin: 0 4px;
+    border: 1px solid #ddd;
+    text-decoration: none;
+    color: #333;
+    border-radius: 4px;
+}
+.pagination a.active {
+    background-color: red;
+    color: white;
+}
+.pagination a:hover {
+    background-color: #ddd;
+}
+
+
+/* ==================== 🔻 FOOTER ==================== */
+

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!-- 스네이크 케이스(SNAKE_CASE) → 카멜 케이스(CamelCase) 자동 변환 -->
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <typeAliases>
+        <typeAlias type="com.fastcampus.gearshift.dto.CouponDto" alias="couponDto" ></typeAlias>
+        <typeAlias type="com.fastcampus.gearshift.dto.IssuedCouponDto" alias="issuedCouponDto"></typeAlias>
+        <typeAlias type="com.fastcampus.gearshift.dto.CarDto" alias="carDto"></typeAlias>
+        <typeAlias type="com.fastcampus.gearshift.dto.CategoryDto" alias="categoryDto"></typeAlias>
+        <typeAlias type="com.fastcampus.gearshift.dto.ImageDto" alias="imageDto"></typeAlias>
+        <typeAlias type="com.fastcampus.gearshift.dto.LOrderDTO" alias="LOrderDTO"></typeAlias>
+        <typeAlias type="com.fastcampus.gearshift.dto.PaymentProcessDTO" alias="PaymentProcessDTO"></typeAlias>
+        <typeAlias type="com.fastcampus.gearshift.dto.DeliveryDTO" alias="DeliveryDTO"></typeAlias>
+        <typeAlias type="com.fastcampus.gearshift.dto.LOrderListDTO" alias="LOrderListDTO"></typeAlias>
+        <typeAlias type="com.fastcampus.gearshift.dto.LRefundAbleListDTO" alias="LRefundAbleListDTO"></typeAlias>
+        <typeAlias type="com.fastcampus.gearshift.dto.LRefundDTO" alias="LRefundDTO"></typeAlias>
+        <typeAlias type="com.fastcampus.gearshift.dto.CarDetailDto" alias="CarDetailDto"></typeAlias>
+        <typeAlias type="com.fastcampus.gearshift.dto.LHolderDTO" alias="LHolderDTO"></typeAlias>
+
+    </typeAliases>
+</configuration>

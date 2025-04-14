@@ -1,0 +1,70 @@
+/* 전체 main 태그 내부 스타일 */
+main {
+    max-width: 600px;
+    margin: 80px auto; /* 헤더 사이드바 고려 + 중앙정렬 */
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #333;
+}
+
+/* 각 section 구역 스타일 */
+main section {
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+/* 제목들 정리 */
+main h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+main h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+/* 정보 항목 */
+main p {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+/* 버튼 영역 */
+main form section {
+    padding: 0;
+    border: none;
+    background: none;
+}
+
+/* 다음 단계 버튼 */
+main button[type="submit"] {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+    background-color: #007aff;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+main button[type="submit"]:hover {
+    background-color: #005fcc;
+}
+
+main {
+    min-height: calc(100vh - 140px); /* header + footer 대충 합쳐서 */
+    padding: 40px 20px 100px; /* 위, 양옆, 아래 */
+    box-sizing: border-box;
+}
