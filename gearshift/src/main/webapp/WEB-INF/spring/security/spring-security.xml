@@ -45,6 +45,11 @@
         <!-- 예외 처리 -->
         <access-denied-handler error-page="/error403" />
 
+        <!-- X-Frame-Options을 SAMEORIGIN으로 허용 -->
+        <headers>
+            <frame-options policy="SAMEORIGIN"/>
+        </headers>
+
         <!-- CSRF 비활성화 -->
         <csrf disabled="true" />
     </http>

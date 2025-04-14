@@ -14,5 +14,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/uploads/**")
                 .addResourceLocations("file:///C:/upload/")
                 .addResourceLocations("file:///C:/Dev/reviews/");
+        registry.addResourceHandler("/chatbot/**")
+                .addResourceLocations("/chatbot/");
     }
+
 }
