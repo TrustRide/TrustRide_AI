@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="inquiry">
+
+    <select id="inquiryList" resultType="com.fastcampus.gearshift.dto.InquiryDto">
+        SELECT i.*, u.user_email
+        FROM inquiry i
+                 JOIN user u ON i.user_id = u.user_id
+        WHERE i.is_deleted = 0
+        ORDER BY i.created_at DESC
+    </select>
+
+    <select id="getInquiryById" parameterType="int" resultType="com.fastcampus.gearshift.dto.InquiryDto">
+        SELECT i.*, u.user_email
+        FROM inquiry i
+                 JOIN user u ON i.user_id = u.user_id
+        WHERE i.inquiry_id = #{inquiryId} AND i.is_deleted = 0
+    </select>
+
+    <update id="modify" parameterType="com.fastcampus.gearshift.dto.InquiryDto">
+        UPDATE inquiry
+        SET inquiry_type = #{inquiryType},
+            inquiry_name = #{inquiryName},
+            inquiry_content = #{inquiryContent},
+            model_name = #{modelName},
+            updated_at = NOW()
+        WHERE inquiry_id = #{inquiryId} AND user_id = #{userId}
+    </update>
+
+    <update id="delete" parameterType="map">
+        UPDATE inquiry
+        SET is_deleted = 1, updated_at = NOW()
+        WHERE inquiry_id = #{inquiryId}
+        <if test="userId != null">
+            AND user_id = #{userId}
+        </if>
+    </update>
+
+    <select id="getMyInquiries" resultType="com.fastcampus.gearshift.dto.InquiryDto" parameterType="int">
+        SELECT i.*, u.user_email
+        FROM inquiry i
+                 JOIN user u ON i.user_id = u.user_id
+        WHERE i.user_id = #{userId} AND i.is_deleted = 0
+        ORDER BY i.created_at DESC
+    </select>
+
+    <insert id="write" parameterType="com.fastcampus.gearshift.dto.InquiryDto">
+        INSERT INTO inquiry (
+            inquiry_status, inquiry_type, inquiry_name, inquiry_content,
+             model_name, user_name, user_id, is_deleted, created_at, updated_at
+        ) VALUES (
+                     '처리대기', #{inquiryType}, #{inquiryName}, #{inquiryContent},
+                     #{modelName}, #{userName}, #{userId},
+                     0, NOW(), NOW()
+                 )
+    </insert>
+
+    <update id="updateStatus" parameterType="map">
+        UPDATE inquiry
+        SET inquiry_status = #{status}, updated_at = NOW()
+        WHERE inquiry_id = #{inquiryId}
+    </update>
+
+</mapper>
+
+
+
+

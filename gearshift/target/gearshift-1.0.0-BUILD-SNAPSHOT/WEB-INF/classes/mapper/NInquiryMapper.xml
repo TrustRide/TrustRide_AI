@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="nInquiry">
+
+    <select id="findByUserId" parameterType="Integer" resultType="com.fastcampus.gearshift.dto.NInquiryDto">
+        SELECT *
+        FROM inquiry
+        WHERE user_id = #{userId} AND is_deleted = 0
+        ORDER BY created_at DESC
+    </select>
+
+    <select id="findById" parameterType="int" resultType="com.fastcampus.gearshift.dto.NInquiryDto">
+        SELECT * FROM inquiry WHERE inquiry_id = #{inquiryId} AND is_deleted = 0
+    </select>
+
+    <insert id="insert" parameterType="com.fastcampus.gearshift.dto.NInquiryDto">
+        INSERT INTO inquiry (
+            inquiry_type, inquiry_name, inquiry_content,
+             model_name, user_id, user_name,
+            is_deleted, created_at, updated_at
+        ) VALUES (
+                      #{inquiryType}, #{inquiryName}, #{inquiryContent},
+                      #{modelName}, #{userId}, #{userName},
+                     0, NOW(), NOW()
+                 )
+    </insert>
+
+    <update id="update" parameterType="com.fastcampus.gearshift.dto.NInquiryDto">
+        UPDATE inquiry
+        SET inquiry_status = #{inquiryStatus},
+            inquiry_type = #{inquiryType},
+            inquiry_name = #{inquiryName},
+            inquiry_content = #{inquiryContent},
+            model_name = #{modelName},
+
+            updated_at = NOW()
+        WHERE inquiry_id = #{inquiryId}
+    </update>
+
+    <update id="delete" parameterType="int">
+        UPDATE inquiry
+        SET is_deleted = 1, updated_at = NOW()
+        WHERE inquiry_id = #{inquiryId}
+    </update>
+
+</mapper>

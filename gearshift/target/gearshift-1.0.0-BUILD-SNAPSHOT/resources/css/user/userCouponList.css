@@ -1,0 +1,94 @@
+/* 전체 레이아웃 */
+.coupon-main {
+    margin-left: 250px; /* sidebar 공간 확보 */
+    padding: 40px 20px 100px;
+    min-height: 80vh;
+    box-sizing: border-box;
+    background-color: #fff;
+}
+
+/* 쿠폰 테이블 헤더 영역 */
+.coupon-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* 테이블 섹션 중앙 정렬 */
+.coupon-table-section {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* 테이블 스타일 */
+.coupon-table-section table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    background: #fff;
+}
+
+/* 헤더 셀 */
+.coupon-table-section thead th {
+    padding: 12px 10px;
+    background-color: #f8f8f8;
+    border-bottom: 2px solid #ddd;
+    font-weight: bold;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* 바디 셀 */
+.coupon-table-section tbody td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+    font-size: 14px;
+    word-break: break-word;
+    white-space: nowrap;
+}
+
+/* 상태 텍스트 */
+.status-used {
+    color: #2e7d32;
+    background: #e8f5e9;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 13px;
+    display: inline-block;
+}
+.status-unused {
+    color: #ff9800;
+    background: #fff3e0;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 13px;
+    display: inline-block;
+}
+
+/* 버튼 */
+.use-button {
+    background-color: #007aff;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.use-button:hover {
+    background-color: #005ecb;
+}
+
+.disabled {
+    color: #999;
+}
+
+main {
+    min-height: calc(100vh - 140px); /* header + footer 대충 합쳐서 */
+    padding: 40px 20px 100px; /* 위, 양옆, 아래 */
+    box-sizing: border-box;
+}

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="reviewMapper">
+
+    <resultMap id="reviewWithReviewCommentMap" type="com.fastcampus.gearshift.dto.ReviewDto">
+        <id property="reviewId" column="review_id"/>
+        <result property="reviewTitle" column="review_title"/>
+        <result property="reviewContent" column="review_content"/>
+        <result property="rating" column="rating"/>
+        <result property="orderId" column="order_id"/>
+        <result property="carInfoId" column="car_info_id"/>
+        <result property="modelName" column="model_name"/>
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="userEmail" column="user_email"/>
+        <result property="isDeleted" column="is_deleted"/>
+        <result property="isAnswered" column="is_answered"/>
+        <result property="imageUrl" column="image_url"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+
+        <!-- Nested ReviewCommentDto -->
+        <association property="reviewComment" javaType="com.fastcampus.gearshift.dto.ReviewCommentDto">
+            <result property="reviewCommentId" column="review_comment_id"/>
+            <result property="commentContent" column="comment_content"/>
+            <result property="reviewId" column="rc_review_id"/>
+            <result property="adminId" column="admin_id"/>
+            <result property="isDeleted" column="rc_is_deleted"/>
+            <result property="createdAt" column="rc_created_at"/>
+            <result property="updatedAt" column="rc_updated_at"/>
+        </association>
+    </resultMap>
+
+
+    <select id="countAllReviewsFiltered" resultType="int">
+        SELECT COUNT(review_id)
+        FROM review
+        WHERE is_deleted = 0
+    </select>
+
+    <select id="selectReviewsWithPagingFiltered" resultMap="reviewWithReviewCommentMap">
+        SELECT
+            r.review_id
+            , r.review_title
+            , r.review_content
+            , r.order_id
+            , r.created_at
+            , r.updated_at
+            , u.user_name
+            , u.user_email
+            , i.model_name
+            , CASE WHEN rc.review_id IS NOT NULL AND rc.is_deleted = 0 THEN true ELSE false END AS is_answered
+            , i2.image_url
+
+            , rc.review_comment_id
+            , rc.comment_content
+            , rc.review_id AS rc_review_id
+            , rc.admin_id
+            , rc.is_deleted AS rc_is_deleted
+            , rc.created_at AS rc_created_at
+            , rc.updated_at AS rc_updated_at
+        FROM review r
+            LEFT JOIN information i ON r.car_info_id = i.car_info_id
+            LEFT JOIN user u ON r.user_id = u.user_id
+            LEFT JOIN review_comment rc ON r.review_id = rc.review_id
+            LEFT JOIN image i2 ON r.review_id = i2.review_id AND i2.is_deleted = 0
+        WHERE r.is_deleted = 0
+        <if test="isAnswered != null">
+            <choose>
+                <when test="isAnswered">
+                    AND rc.review_id IS NOT NULL AND rc.is_deleted = 0
+                </when>
+                <otherwise>
+                    AND (rc.review_id IS NULL OR rc.is_deleted = 1)
+                </otherwise>
+            </choose>
+        </if>
+        ORDER BY r.review_id DESC
+            LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="findById" resultMap="reviewWithReviewCommentMap">
+        SELECT
+            r.review_id
+            , r.review_title
+            , r.review_content
+            , r.rating
+            , r.user_id
+            , r.is_deleted
+            , r.created_at
+            , u.user_name
+
+            , rc.review_comment_id
+            , rc.comment_content
+            , rc.review_id AS rc_review_id
+            , rc.admin_id
+            , rc.is_deleted AS rc_is_deleted
+            , rc.created_at AS rc_created_at
+            , rc.updated_at AS rc_updated_at
+
+            , i.image_url
+        FROM review r
+            LEFT JOIN user u ON r.user_id = u.user_id
+            LEFT JOIN image i ON r.review_id = i.review_id AND i.is_deleted = 0
+            LEFT JOIN review_comment rc ON r.review_id = rc.review_id AND rc.is_deleted = 0
+        WHERE r.review_id = #{id}
+          AND r.is_deleted = 0
+    </select>
+
+    <insert id="insertReview" parameterType="com.fastcampus.gearshift.dto.ReviewDto">
+        INSERT INTO review (review_title, review_content, rating, order_id, car_info_id, user_id)
+        VALUES (#{reviewTitle}, #{reviewContent}, #{rating}, #{orderId}, #{carInfoId}, #{userId})
+    </insert>
+
+    <!-- review 삭제 -->
+    <update id="deleteReview" parameterType="int">
+        UPDATE review
+        SET is_deleted = 1
+        WHERE review_id = #{reviewId}
+    </update>
+
+    <!-- review_comment 삭제 -->
+    <update id="deleteReviewCommentByReviewId" parameterType="int">
+        UPDATE review_comment
+        SET is_deleted = 1
+        WHERE review_id = #{reviewId}
+    </update>
+
+    <!-- image 삭제 -->
+    <update id="deleteImageByReviewId" parameterType="int">
+        UPDATE image
+        SET is_deleted = 1
+        WHERE review_id = #{reviewId}
+    </update>
+
+    <insert id="insertComment" parameterType="com.fastcampus.gearshift.dto.ReviewCommentDto">
+        INSERT INTO review_comment (admin_id, comment_content, review_id)
+        VALUES (#{adminId}, #{commentContent}, #{reviewId})
+    </insert>
+
+    <delete id="deleteComment" parameterType="int">
+        DELETE FROM review_comment
+        WHERE review_comment_id = #{reviewCommentId}
+    </delete>
+
+    <select id="findReviewId" parameterType="com.fastcampus.gearshift.dto.ReviewDto" resultType="int">
+        SELECT
+            r.review_id
+        FROM review r
+        WHERE r.car_info_id = #{carInfoId}
+          AND r.user_id = #{userId}
+          AND r.is_deleted = 0
+    </select>
+
+    <insert id="insertReviewImage" parameterType="com.fastcampus.gearshift.dto.ImageDto">
+        INSERT INTO image (image_uuid, image_url, review_id)
+        VALUES (#{imageUuid}, #{imageUrl}, #{reviewId})
+    </insert>
+
+</mapper>

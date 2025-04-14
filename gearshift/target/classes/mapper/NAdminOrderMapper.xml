@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="vw_order_summary">
+
+    <select id="orderList" resultType="com.fastcampus.gearshift.dto.NOrderListDto">
+        SELECT
+            user_name,
+            user_id,
+            order_id,
+            total_price,
+            delivery_status,
+            order_status,
+            order_completed_date
+        FROM vw_order_summary
+        ORDER BY order_completed_date DESC
+    </select>
+
+
+    <update id="updateDeliveryStatus" parameterType="map">
+        UPDATE delivery
+        SET delivery_status = #{deliveryStatus}
+        WHERE order_id = #{orderId}
+    </update>
+
+
+
+
+
+</mapper>
+

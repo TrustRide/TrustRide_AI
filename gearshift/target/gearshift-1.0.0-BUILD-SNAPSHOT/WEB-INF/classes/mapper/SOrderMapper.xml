@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="orderMapper">
+
+    <resultMap id="orderWithReviewMap" type="com.fastcampus.gearshift.dto.SOrderDto">
+        <id property="orderId" column="order_id"/>
+        <result property="orderCompletedDate" column="order_completed_date"/>
+        <result property="carInfoId" column="car_info_id"/>
+        <result property="modelName" column="model_name"/>
+        <result property="reviewStatus" column="review_status"/>
+        <result property="carImageUrl" column="car_image_url"/>
+
+        <!-- Nested ReviewDto -->
+        <association property="review" javaType="com.fastcampus.gearshift.dto.ReviewDto">
+            <result property="reviewId" column="review_id"/>
+            <result property="reviewTitle" column="review_title"/>
+            <result property="reviewContent" column="review_content"/>
+            <result property="rating" column="rating"/>
+            <result property="imageUrl" column="image_url"/>
+            <result property="createdAt" column="created_at"/>
+            <result property="updatedAt" column="updated_at"/>
+            <result property="isAnswered" column="is_answered"/>
+
+            <association property="reviewComment" javaType="com.fastcampus.gearshift.dto.ReviewCommentDto">
+                <result property="reviewCommentId" column="review_comment_id"/>
+                <result property="commentContent" column="comment_content"/>
+                <result property="reviewId" column="rc_review_id"/>
+                <result property="adminId" column="admin_id"/>
+                <result property="isDeleted" column="rc_is_deleted"/>
+                <result property="createdAt" column="rc_created_at"/>
+                <result property="updatedAt" column="rc_updated_at"/>
+            </association>
+        </association>
+    </resultMap>
+
+
+    <select id="selectCompletedOrdersWithReviewStatus" resultMap="orderWithReviewMap" parameterType="java.lang.Integer">
+        SELECT
+            o.order_id
+            , o.car_info_id
+            , i.model_name
+            , o.order_completed_date
+            , CASE
+                  WHEN r.order_id IS NOT NULL THEN 'Y'
+                ELSE 'N'
+                END AS review_status
+            , r.review_id
+            , r.review_title
+            , r.review_content
+            , r.rating
+            , r.created_at
+            , r.updated_at
+            , i2.image_url
+            , i3.image_url AS car_image_url
+
+            , rc.review_comment_id
+            , rc.comment_content
+            , rc.review_id AS rc_review_id
+            , rc.admin_id
+            , rc.is_deleted AS rc_is_deleted
+            , rc.created_at AS rc_created_at
+            , rc.updated_at AS rc_updated_at
+
+            , CASE WHEN rc.review_id IS NOT NULL AND rc.is_deleted = 0 THEN true ELSE false END AS is_answered
+        FROM orders o
+                 LEFT JOIN review r ON o.order_id = r.order_id AND r.is_deleted = 0
+                 LEFT JOIN information i ON o.car_info_id = i.car_info_id
+                 LEFT JOIN image i2 ON r.review_id = i2.review_id AND i2.is_deleted = 0
+                 LEFT JOIN review_comment rc ON r.review_id = rc.review_id AND rc.is_deleted = 0
+                 LEFT JOIN image i3 on o.car_info_id = i3.car_info_id and i3.is_deleted = 0 and i3.is_thumbnail = 1
+        WHERE o.user_id = #{userId}
+          AND o.order_status = '주문완료'
+        ORDER BY o.order_id DESC
+    </select>
+
+</mapper>

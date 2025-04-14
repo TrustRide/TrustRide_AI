@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="categoryMapper">
+
+
+
+    <!-- 특정 계층(대/중/소)에 해당하는 카테고리 조회 -->
+    <select id="findByTier" parameterType="int" resultType="categoryDto">
+        SELECT cate_code, cate_name, cate_parent FROM car_cate WHERE tier = #{tier}
+    </select>
+
+    <!-- 부모 카테고리 기준 하위 카테고리 조회 -->
+    <select id="findByParentCode" parameterType="string" resultType="categoryDto">
+        SELECT cate_code, cate_name, cate_parent FROM car_cate WHERE cate_parent = #{parentCode}
+    </select>
+
+
+</mapper>

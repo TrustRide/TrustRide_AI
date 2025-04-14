@@ -1,0 +1,152 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f8f9fa;
+    user-select: none;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.image-container img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.title {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.stars {
+    color: #FFD700;
+    font-size: 20px;
+    white-space: nowrap;
+}
+
+.description {
+    margin-top: 10px;
+    font-size: 15px;
+    color: #333;
+}
+
+.back-link {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background: #ff5722;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.back-link:hover {
+    background: #e64a19;
+}
+
+.comment-section {
+    margin-top: 30px;
+}
+
+.comment-list {
+    margin-top: 20px;
+    padding: 10px;
+    background: #f1f1f1;
+    border-radius: 5px;
+}
+
+.comment {
+    padding: 10px;
+    background: white;
+    border-radius: 5px;
+}
+
+
+.comment-header {
+    display: flex;
+    justify-content: space-between; /* ← 양쪽 정렬 핵심 */
+    align-items: baseline;
+}
+
+.comment-header .author {
+    font-weight: bold;
+    color: #333;
+}
+
+.comment-header .comment-time {
+    margin-left: auto;
+}
+
+.comment .text {
+    margin-top: 5px;
+    font-size: 14px;
+    color: #555;
+}
+
+.button-wrapper {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.meta-info {
+    text-align: right;
+    color: #777;
+    font-size: 14px;
+    margin-top: 4px;
+    margin-bottom: 16px;
+}
+
+.meta-info .writer::after {
+    content: "  ·  ";
+}
+
+
+/* 댓글 등록 (관리자) */
+.comment textarea {
+    width: 100%;
+    box-sizing: border-box;
+    resize: vertical;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 5px;
+    height: 120px;
+}
+
+.button {
+    background-color: #2b78e4;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #1c5bbf;
+}
+
+main {
+    min-height: calc(100vh - 140px); /* header + footer 대충 합쳐서 */
+    padding: 40px 20px 100px; /* 위, 양옆, 아래 */
+    box-sizing: border-box;
+}

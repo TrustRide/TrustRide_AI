@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fastcampus.gearshift">
+
+
+
+
+    <!-- 수정 반영 조회  -->
+    <select id="select" parameterType="Integer" resultType="com.fastcampus.gearshift.dto.UserDto">
+        select user_id,user_name,user_phone_number
+        from trustride.USER
+        where user_id = #{userId};
+    </select>
+
+    <!-- 차량 리스트 조회 -->
+    <!-- 전체 차량 개수 조회 -->
+    <select id="getCarCount" resultType="int">
+
+        SELECT COUNT(*) FROM car_information WHERE is_deleted = false
+
+    </select>
+
+    <!-- 페이징된 차량 리스트 조회 -->
+    <select id="selectList" resultType="com.fastcampus.gearshift.dto.CarListDto">
+
+        SELECT
+            ci.car_info_id,
+            info.model_name,
+            info.manufacture_year,
+            info.mileage,
+            info.transmission,
+            info.car_price,
+            info.fuel_type,
+            img.image_url AS thumbnail_url,
+            img.image_id AS thumbnail_image_id
+        FROM car_information ci
+                 LEFT JOIN information info ON ci.car_info_id = info.car_info_id
+                 LEFT JOIN image img ON ci.car_info_id = img.car_info_id AND img.is_thumbnail = true
+        WHERE ci.is_deleted = false
+          AND ci.sold_status = '판매중'
+          AND info.is_deleted = false
+        ORDER BY ci.car_info_id DESC
+            LIMIT #{pageSize} OFFSET #{offset}
+
+    </select>
+
+
+
+
+    <select id="carSelect" parameterType="Integer" resultMap="CarInfoWithImagesResultMap">
+
+        SELECT
+            ci.car_info_id,
+            info.model_name,
+            info.car_num,
+            info.manufacture_year,
+            info.mileage,
+            info.fuel_type,
+            info.engine_capacity,
+            info.transmission,
+            info.color,
+            info.car_price,
+            info.previous_registration_fee,
+            info.maintenance_cost,
+            info.agency_fee,
+            info.car_amount_price,
+            ci.description,
+            ci.offer_report_number,
+            ci.vin_number,
+            info.car_location,
+            img.image_id,
+            img.image_url,
+            img.image_type,
+            img.is_thumbnail
+        FROM car_information ci
+                 JOIN information info ON ci.car_info_id = info.car_info_id
+                 LEFT JOIN image img ON ci.car_info_id = img.car_info_id
+        WHERE ci.car_info_id = #{carInfoId}
+
+    </select>
+
+
+
+    <select id="userSelect" parameterType="Integer" resultType="com.fastcampus.gearshift.dto.UserDto">
+        select user_id,user_name,user_phone_number
+        from user
+        where user_id= #{userId};
+    </select>
+
+
+    <!-- 차량 리스트 검색 (제목 일부) --> <!-- 페이징 -->
+    <select id="searchCarsByTitle" parameterType="map" resultType="com.fastcampus.gearshift.dto.CarListDto">
+
+        SELECT
+            ci.car_info_id,
+            info.model_name,
+            ci.description,
+            info.manufacture_year,
+            info.mileage,
+            info.transmission,
+            info.car_price,
+            info.fuel_type,
+            info.color,
+            info.previous_registration_fee AS previousRegistrationFee,
+            info.maintenance_cost AS maintenanceCost,
+            info.agency_fee AS agencyFee,
+            info.car_location AS carLocation,
+            info.owner_change_count AS ownerChangeCount,
+            info.car_price AS carPrice,
+            info.car_num AS carNum,
+            info.car_amount_price AS carAmountPrice
+        FROM car_information ci
+                 LEFT JOIN information info ON ci.car_info_id = info.car_info_id
+        WHERE ci.is_deleted = false
+          AND info.is_deleted = false
+          AND info.model_name LIKE CONCAT('%', #{title}, '%')
+
+    </select>
+
+
+    <!-- 카테고리 조회 -->
+    <select id="selectListByCate" resultType="com.fastcampus.gearshift.dto.CarListDto">
+        SELECT
+            ci.car_info_id,
+            info.model_name,
+            info.manufacture_year,
+            info.mileage,
+            info.transmission,
+            info.car_price,
+            info.fuel_type,
+            img.image_url AS thumbnail_url
+        FROM car_information ci
+                 LEFT JOIN information info ON ci.car_info_id = info.car_info_id
+                 left join image img ON img.car_info_id = info.car_info_id
+        WHERE ci.is_deleted = false
+          AND info.is_deleted = false
+          AND ci.cate_code = #{cateCode}
+          AND img.is_thumbnail = true
+        ORDER BY ci.car_info_id DESC
+            LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
+
+    <select id="getCarCountByCate" resultType="int">
+        SELECT COUNT(*)
+        FROM car_information
+        WHERE is_deleted = false AND cate_code = #{cateCode}
+    </select>
+
+
+
+    <resultMap id="CarInfoWithImagesResultMap" type="com.fastcampus.gearshift.dto.CarInfoDto">
+        <id property="carInfoId" column="car_info_id"/>
+        <result property="modelName" column="model_name"/>
+        <result property="carNum" column="car_num"/>
+        <result property="manufactureYear" column="manufacture_year"/>
+        <result property="mileage" column="mileage"/>
+        <result property="fuelType" column="fuel_type"/>
+        <result property="engineCapacity" column="engine_capacity"/>
+        <result property="transmission" column="transmission"/>
+        <result property="color" column="color"/>
+        <result property="carPrice" column="car_price"/>
+        <result property="previousRegistrationFee" column="previous_registration_fee"/>
+        <result property="maintenanceCost" column="maintenance_cost"/>
+        <result property="agencyFee" column="agency_fee"/>
+        <result property="carAmountPrice" column="car_amount_price"/>
+        <result property="description" column="description"/>
+        <result property="offerReportNumber" column="offer_report_number"/>
+        <result property="vinNumber" column="vin_number"/>
+        <result property="carLocation" column="car_location"/>
+        <collection property="images" ofType="com.fastcampus.gearshift.dto.ImageDto">
+            <id property="imageId" column="image_id"/>
+            <result property="imageUrl" column="image_url"/>
+            <result property="imageType" column="image_type"/>
+            <result property="isThumbnail" column="is_thumbnail"/>
+        </collection>
+    </resultMap>
+
+
+</mapper>

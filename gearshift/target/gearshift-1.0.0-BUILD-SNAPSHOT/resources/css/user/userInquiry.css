@@ -1,0 +1,92 @@
+/* 문의 목록 - 상단 헤더 */
+.inquiry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+/* 문의 없음 메시지 박스 */
+.inquiry-empty {
+    text-align: center;
+    padding: 60px 0;
+    background: #fafafa;
+    border-radius: 8px;
+    border: 1px solid #eee;
+}
+
+.empty-message {
+    font-size: 16px;
+    color: #777;
+}
+
+/* 문의 목록 테이블 */
+.inquiry-table table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* 균등 정렬 */
+}
+
+/* 테이블 헤더 */
+.inquiry-table thead th {
+    padding: 12px 10px;
+    background-color: #f8f8f8;
+    border-bottom: 2px solid #ddd;
+    font-weight: bold;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* 테이블 데이터 셀 */
+.inquiry-table tbody td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+    font-size: 14px;
+    word-break: break-word;
+}
+
+/* 제목만 왼쪽 정렬 */
+.inquiry-table td[data-label="제목"] {
+    text-align: left;
+}
+
+/* 날짜 등 줄바꿈 방지 */
+.inquiry-table td[data-label="작성일"],
+.inquiry-table td[data-label="문의유형"],
+.inquiry-table td[data-label="작성자"],
+.inquiry-table td[data-label="상태"] {
+    white-space: nowrap;
+}
+
+/* 상태 스타일 */
+.status {
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 13px;
+    display: inline-block;
+}
+
+.status.completed {
+    color: #2e7d32;
+    background-color: #e8f5e9;
+}
+
+.status.pending {
+    color: #ff9800;
+    background-color: #fff3e0;
+}
+
+/* 행 hover 효과 */
+.inquiry-table tbody tr:hover {
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+
+main {
+    min-height: calc(100vh - 140px); /* header + footer 대충 합쳐서 */
+    padding: 40px 20px 100px; /* 위, 양옆, 아래 */
+    box-sizing: border-box;
+}

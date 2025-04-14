@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="carMapper">
+
+    <!-- ========================= -->
+    <!--     차량 + 이미지 매핑    -->
+    <!-- ========================= -->
+    <resultMap id="carWithImagesMap" type="com.fastcampus.gearshift.dto.CarDto">
+        <!-- 차량 기본 키 -->
+        <id property="carInfoId" column="car_info_id" />
+
+        <!-- 차량 기본 정보 -->
+        <result property="offerReportNumber" column="offer_report_number" />
+        <result property="vinNumber"        column="vin_number" />
+        <result property="description"      column="description" />
+        <result property="soldStatus"       column="sold_status" />
+
+        <!-- 카테고리 정보 -->
+        <result property="smallCateCode"    column="small_cate_code" />
+        <result property="mediumCateCode"   column="medium_cate_code" />
+        <result property="largeCateCode"    column="large_cate_code" />
+        <result property="smallCateName"    column="small_cate_name" />
+        <result property="mediumCateName"   column="medium_cate_name" />
+        <result property="largeCateName"    column="large_cate_name" />
+
+        <!-- 차량 상세 정보 -->
+        <result property="modelName"           column="model_name" />
+        <result property="mileage"             column="mileage" />
+        <result property="engineCapacity"      column="engine_capacity" />
+        <result property="fuelType"            column="fuel_type" />
+        <result property="transmission"        column="transmission" />
+        <result property="color"               column="color" />
+        <result property="manufactureYear"     column="manufacture_year" />
+        <result property="previousRegistrationFee" column="previous_registration_fee" />
+        <result property="maintenanceCost"     column="maintenance_cost" />
+        <result property="agencyFee"           column="agency_fee" />
+        <result property="carLocation"         column="car_location" />
+        <result property="ownerChangeCount"    column="owner_change_count" />
+        <result property="carPrice"            column="car_price" />
+        <result property="carNum"              column="car_num" />
+        <result property="carAmountPrice"      column="car_amount_price" />
+
+        <!-- 이미지 리스트 매핑 -->
+        <collection property="images" ofType="com.fastcampus.gearshift.dto.ImageDto">
+            <id property="imageId"       column="i_image_id" />
+            <result property="imageUrl"     column="i_image_url" />
+            <result property="imageType"    column="i_image_type" />
+            <result property="imageUuid"    column="i_image_uuid" />
+            <result property="isThumbnail"  column="i_is_thumbnail" />
+        </collection>
+    </resultMap>
+
+    <!-- ========================= -->
+    <!--      차량 목록 조회       -->
+    <!-- ========================= -->
+    <select id="getCarList" resultMap="carWithImagesMap">
+        SELECT
+        ci.car_info_id,                      -- 차량 ID (PK)
+        ci.offer_report_number,             -- 제안서 번호
+        ci.vin_number,                      -- 차대 번호
+        ci.description,                     -- 차량 설명
+        ci.sold_status,                     -- 판매 상태
+
+        sc.cate_code AS small_cate_code,    -- 소분류 코드
+        mc.cate_code AS medium_cate_code,   -- 중분류 코드
+        lc.cate_code AS large_cate_code,    -- 대분류 코드
+        sc.cate_name AS small_cate_name,    -- 소분류 이름
+        mc.cate_name AS medium_cate_name,   -- 중분류 이름
+        lc.cate_name AS large_cate_name,    -- 대분류 이름
+
+        info.model_name,                    -- 모델명
+        info.mileage,                       -- 주행거리
+        info.engine_capacity,               -- 배기량
+        info.fuel_type,                     -- 연료 타입 (가솔린, 디젤 등)
+        info.transmission,                  -- 변속기 (오토, 수동 등)
+        info.color,                         -- 차량 색상
+        info.manufacture_year,              -- 제조 연도
+        info.previous_registration_fee,     -- 이전 등록비
+        info.maintenance_cost,              -- 유지 비용
+        info.agency_fee,                    -- 대행 수수료
+        info.car_location,                  -- 차량 위치 (보관 장소)
+        info.owner_change_count,            -- 소유자 변경 횟수
+        info.car_price,                     -- 차량 가격
+        info.car_num,                       -- 차량 등록 번호
+        info.car_amount_price,              -- 총 차량 가격
+
+        img.image_id AS i_image_id,         -- 이미지 ID
+        img.image_url AS i_image_url,       -- 이미지 경로
+        img.image_type AS i_image_type,     -- 이미지 타입 (예: image/jpeg)
+        img.image_uuid AS i_image_uuid,     -- 이미지 파일 UUID
+        img.is_thumbnail AS i_is_thumbnail  -- 썸네일 여부 (TRUE/FALSE)
+
+        FROM car_information ci
+
+        <!-- 셀프조인을 해서 대중소 등등 -->
+        LEFT JOIN car_cate sc ON ci.cate_code = sc.cate_code
+        LEFT JOIN car_cate mc ON sc.cate_parent = mc.cate_code
+        LEFT JOIN car_cate lc ON mc.cate_parent = lc.cate_code
+        LEFT JOIN information info ON ci.car_info_id = info.car_info_id
+        LEFT JOIN image img ON ci.car_info_id = img.car_info_id
+
+        WHERE ci.is_deleted = FALSE
+        AND info.is_deleted = FALSE
+        ORDER BY ci.car_info_id DESC
+    </select>
+
+    <!-- ========================= -->
+    <!--      차량 상세 조회       -->
+    <!-- ========================= -->
+    <select id="getCarById" parameterType="Integer" resultType="carDto">
+        SELECT
+            ci.car_info_id,                        -- 차량 ID
+            ci.offer_report_number,               -- 제안서 번호
+            ci.vin_number,                        -- 차대 번호
+            ci.description,                       -- 설명
+            ci.sold_status,                       -- 판매 상태
+            ci.cate_code AS small_cate_code,      -- 소분류 코드
+
+            info.model_name,                      -- 모델명
+            info.mileage,                         -- 주행거리
+            info.engine_capacity,                 -- 배기량
+            info.fuel_type,                       -- 연료 타입
+            info.transmission,                    -- 변속기
+            info.color,                           -- 색상
+            info.manufacture_year,                -- 연식
+            info.previous_registration_fee,       -- 이전 등록비
+            info.maintenance_cost,                -- 유지비
+            info.agency_fee,                      -- 대행 수수료
+            info.car_location,                    -- 위치
+            info.owner_change_count,              -- 소유자 변경 횟수
+            info.car_price,                       -- 차량 가격
+            info.car_num,                         -- 차량 번호
+            info.car_amount_price                 -- 총 차량 금액
+        FROM car_information ci
+                 LEFT JOIN information info ON ci.car_info_id = info.car_info_id
+        WHERE ci.is_deleted = FALSE
+          AND info.is_deleted = FALSE
+          AND ci.car_info_id = #{carInfoId}
+    </select>
+
+    <!-- ========================= -->
+    <!--     썸네일 이미지 조회     -->
+    <!-- ========================= -->
+    <select id="getThumbnailByCarId" parameterType="int" resultType="imageDto">
+        SELECT
+            image_id,           -- 이미지 ID
+            image_url,          -- 이미지 경로
+            image_type,         -- 이미지 타입
+            image_uuid,         -- 이미지 UUID
+            car_info_id,        -- 차량 ID
+            is_thumbnail        -- 썸네일 여부
+        FROM image
+        WHERE car_info_id = #{carInfoId}
+          AND is_thumbnail = TRUE
+    </select>
+
+    <!-- ========================= -->
+    <!--     차량 등록 (정보)      -->
+    <!-- ========================= -->
+
+    <!-- 차량 기본 정보 등록 -->
+    <insert id="insertCarInformation" useGeneratedKeys="true" keyProperty="carInfoId">
+        INSERT INTO car_information (
+            offer_report_number,      -- 제안서 번호
+            vin_number,               -- 차대 번호
+            description,              -- 차량 설명
+            cate_code,                -- 소분류 코드
+            sold_status               -- 판매 상태
+        ) VALUES (
+                     #{offerReportNumber}, #{vinNumber}, #{description}, #{smallCateCode}, #{soldStatus}
+                 )
+    </insert>
+
+    <!-- 차량 상세 정보 등록 -->
+    <insert id="insertCarBasicInfo">
+        INSERT INTO information (
+            car_info_id,                   -- 차량 ID (FK)
+            model_name,                    -- 모델명
+            mileage,                       -- 주행거리
+            engine_capacity,               -- 배기량
+            fuel_type,                     -- 연료
+            transmission,                  -- 변속기
+            color,                         -- 색상
+            manufacture_year,              -- 연식
+            previous_registration_fee,     -- 이전 등록비
+            maintenance_cost,              -- 유지비
+            agency_fee,                    -- 대행 수수료
+            car_location,                  -- 위치
+            owner_change_count,            -- 소유자 변경 횟수
+            car_price,                     -- 차량 가격
+            car_num,                       -- 차량 번호
+            car_amount_price               -- 차량 총 금액
+        ) VALUES (
+                     #{carInfoId}, #{modelName}, #{mileage}, #{engineCapacity}, #{fuelType},
+                     #{transmission}, #{color}, #{manufactureYear}, #{previousRegistrationFee},
+                     #{maintenanceCost}, #{agencyFee}, #{carLocation},
+                     #{ownerChangeCount}, #{carPrice}, #{carNum}, #{carAmountPrice}
+                 )
+    </insert>
+
+    <!-- 이미지 등록 -->
+    <insert id="insertCarImage" parameterType="imageDto">
+        INSERT INTO image (
+            image_uuid,       -- UUID
+            image_url,        -- 이미지 경로
+            image_type,       -- 이미지 타입
+            car_info_id,      -- 차량 ID
+            is_thumbnail      -- 썸네일 여부
+        ) VALUES (
+                     #{imageUuid},
+                     #{imageUrl},
+                     #{imageType},
+                     #{carInfoId},
+                     #{isThumbnail}
+                 )
+    </insert>
+
+    <!-- ========================= -->
+    <!--     차량 정보 수정        -->
+    <!-- ========================= -->
+    <update id="updateCarInformation">
+        UPDATE car_information
+        SET offer_report_number = #{offerReportNumber},    -- 제안서 번호
+            vin_number = #{vinNumber},                    -- 차대 번호
+            description = #{description},                 -- 설명
+            cate_code = #{smallCateCode},                 -- 소분류 코드
+            sold_status = #{soldStatus}                   -- 판매 상태
+        WHERE car_info_id = #{carInfoId}
+          AND is_deleted = FALSE
+    </update>
+
+    <update id="updateCarBasicInfo">
+        UPDATE information
+        SET model_name = #{modelName},                    -- 모델명
+            mileage = #{mileage},                         -- 주행거리
+            engine_capacity = #{engineCapacity},          -- 배기량
+            fuel_type = #{fuelType},                      -- 연료
+            transmission = #{transmission},               -- 변속기
+            color = #{color},                             -- 색상
+            manufacture_year = #{manufactureYear},        -- 연식
+            previous_registration_fee = #{previousRegistrationFee},  -- 이전 등록비
+            maintenance_cost = #{maintenanceCost},        -- 유지비
+            agency_fee = #{agencyFee},                    -- 대행 수수료
+            car_location = #{carLocation},                -- 위치
+            owner_change_count = #{ownerChangeCount},     -- 소유 변경 횟수
+            car_price = #{carPrice},                      -- 가격
+            car_num = #{carNum},                          -- 차량 번호
+            car_amount_price = #{carAmountPrice}          -- 총 금액
+        WHERE car_info_id = #{carInfoId}
+          AND is_deleted = FALSE
+    </update>
+
+
+    <!-- ========================= -->
+    <!--     차량 삭제 처리        -->
+    <!-- ========================= -->
+    <update id="deleteCar">
+        UPDATE car_information
+        SET is_deleted = TRUE        -- 차량 삭제 플래그 설정
+        WHERE car_info_id = #{carInfoId}
+    </update>
+
+    <update id="deleteCarInfo">
+        UPDATE information
+        SET is_deleted = TRUE        -- 상세 정보 삭제 플래그 설정
+        WHERE car_info_id = #{carInfoId}
+    </update>
+
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fastcampus.gearshift.dao.CarInfoMapper">
+
+    <!-- 자동차 정보 조회   -->
+    <select id="getCarInfo" resultType="CarDetailDto">
+          SELECT info.car_info_id, info.model_name, info.car_num, info.manufacture_year, info.mileage, info.fuel_type, info.car_price,
+                 info.previous_registration_fee, info.maintenance_cost, info.agency_fee, img.image_url
+          FROM information info
+          JOIN image img
+          ON info.car_info_id = img.car_info_id
+          WHERE info.car_info_id = #{carInfoId}
+
+    </select>
+
+</mapper>
+
+

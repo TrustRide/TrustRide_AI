@@ -1,0 +1,188 @@
+* {
+box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 40px 20px;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* 상품 정보 박스 */
+.product-info-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.product-info-box img {
+    width: 50px;
+    height: 50px;
+}
+
+.product-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.product-name {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.product-date {
+    color: #888;
+    font-size: 14px;
+    margin-top: 3px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 8px;
+    color: #444;
+}
+
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    resize: vertical;
+}
+
+textarea {
+    height: 150px;
+}
+
+.file-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.file-label {
+    display: inline-block;
+    background-color: #eee;
+    color: #333;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.file-label:hover {
+    background-color: #ddd;
+}
+
+.file-name {
+    font-size: 14px;
+    color: #555;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.submit-button,
+.cancel-button {
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+}
+
+.submit-button {
+    background-color: #007aff;
+    color: white;
+}
+
+.submit-button:hover {
+    background-color: #005fcc;
+}
+
+.cancel-button {
+    background-color: #f0f0f0;
+    color: #555;
+    border: 1px solid #ccc;
+}
+
+.cancel-button:hover {
+    background-color: #e0e0e0;
+}
+
+
+
+.rating {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* 왼쪽 정렬 */
+}
+
+.rating .rating-title {
+    margin-right: 10px;
+}
+
+.stars {
+    display: flex;            /* 별들을 가로로 정렬 */
+    flex-direction: row-reverse;  /* 오른쪽부터 왼쪽으로 별 5→1 정렬 */
+    justify-content: flex-start;
+}
+
+.stars input[type="radio"] {
+    display: none;           /* 라디오 버튼 숨김 */
+}
+
+.stars label {
+    font-size: 24px;
+    color: lightgray;
+    cursor: pointer;
+    padding: 0 2px;
+    transition: color 0.2s;
+}
+
+.stars input[type="radio"]:checked ~ label {
+    color: gold;
+}
+
+/* 마우스 올렸을 때 별 하이라이트 */
+.stars label:hover,
+.stars label:hover ~ label {
+    color: gold;
+}
+
+main {
+    min-height: calc(100vh - 140px); /* header + footer 대충 합쳐서 */
+    padding: 40px 20px 100px; /* 위, 양옆, 아래 */
+    box-sizing: border-box;
+}
