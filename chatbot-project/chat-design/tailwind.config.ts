@@ -64,12 +64,12 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				chatbot: {
-					primary: "#9b87f5",
+					primary: "#ff5c00",
 					secondary: "#e5deff",
 					accent: "#6E59A5",
-					light: "#f8f5ff",
+					light: "#fef9f6",
 					user: "#f1f0fb",
-					bot: "#e5deff"
+					bot: "#fee7d6"
 				}
 			},
 			borderRadius: {
