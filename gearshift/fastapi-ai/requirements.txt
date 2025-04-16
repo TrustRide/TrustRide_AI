@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+pandas
+chromadb
+openai
+
+# LangChain 관련
+langchain==0.1.14
+langchain-upstage
+langchain-community
+
+# 기타 필수
+tiktoken
+httpx
+typing-extensions
+pydantic>=1.10.0,<2.0
