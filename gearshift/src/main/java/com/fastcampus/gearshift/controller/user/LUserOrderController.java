@@ -5,10 +5,7 @@ import com.fastcampus.gearshift.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -30,6 +27,12 @@ public class LUserOrderController {
         // userId를 session에서 꺼내주기
         UserDto userDto = (UserDto) session.getAttribute("loginUser");
         Integer userId = userDto.getUserId();
+
+        // 유저 정보가 없으면 예외처리
+        if (userDto == null) {
+            throw new IllegalStateException("로그인 정보가 없습니다. 다시 로그인해주세요.");
+        }
+
         // 전체 주문 처리 로직을 서비스로 위임
         orderService.processCashOrder(lOrderDTO, paymentProcessDTO, lHolderDTO, deliveryDTO, userId);
 
@@ -45,6 +48,11 @@ public class LUserOrderController {
         UserDto userDto = (UserDto) session.getAttribute("loginUser");
         Integer userId = userDto.getUserId();
 
+        // 유저 정보가 없으면 예외처리
+        if (userDto == null) {
+            throw new IllegalStateException("로그인 정보가 없습니다. 다시 로그인해주세요.");
+        }
+
         orderService.processCashOrder(lOrderDTO, paymentProcessDTO, lHolderDTO, deliveryDTO, userId);
 
         return "redirect:/user/orders/status/orderList";
@@ -58,6 +66,11 @@ public class LUserOrderController {
         UserDto userDto = (UserDto) session.getAttribute("loginUser");
         Integer userId = userDto.getUserId();
 
+        // 유저 정보가 없으면 예외처리
+        if (userDto == null) {
+            throw new IllegalStateException("로그인 정보가 없습니다. 다시 로그인해주세요.");
+        }
+
         // 주문 목록 조회
         List<LOrderListDTO> orderListDTO = orderService.getLOrderList(userId);
         model.addAttribute("orderList", orderListDTO);
@@ -67,5 +80,12 @@ public class LUserOrderController {
         model.addAttribute("refundList", refundDTOList);
 
         return "user/userOrderHistory";
+    }
+
+    // 이 컨트롤러에서 발생한 모든 예외 처리
+    @ExceptionHandler(Exception.class)
+    public String handleException(Exception e, Model model) {
+        model.addAttribute("errorMessage", "요청 처리 중 오류가 발생했습니다. 상세: " + e.getMessage());
+        return "user/errorPage"; // 오류 페이지로 이동
     }
 }
