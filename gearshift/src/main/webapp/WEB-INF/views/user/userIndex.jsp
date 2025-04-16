@@ -74,7 +74,7 @@
       background: #2d2d2d;
       color: #fff;
       padding: 0;
-      height: 32px;
+      height: 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
