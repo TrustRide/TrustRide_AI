@@ -41,7 +41,7 @@ documents = [Document(page_content=row) for row in df["광고문구"].tolist()]
 splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
 split_docs = splitter.split_documents(documents)
 
-embeddings = UpstageEmbeddings(model="solar-embedding-1-large", api_key="up_Cyk5oYYEV4A6OW26vjPld4WikIfXU")
+embeddings = UpstageEmbeddings(model="solar-embedding-1-large", api_key="your-api-key!!!!!!!!")
 if os.path.exists(CHROMA_DB_DIR):
     vector_db = Chroma(persist_directory=CHROMA_DB_DIR, embedding_function=embeddings)
 else:
