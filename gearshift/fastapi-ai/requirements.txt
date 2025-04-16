@@ -1,16 +1,27 @@
-fastapi
+# FastAPI 전체 기능 포함
+fastapi[standard]
+
+# 유틸
 uvicorn
 pandas
-chromadb
-openai
-
-# LangChain 관련
-langchain==0.1.14
-langchain-upstage
-langchain-community
-
-# 기타 필수
-tiktoken
 httpx
+tiktoken
 typing-extensions
-pydantic>=1.10.0,<2.0
+
+# LangChain 생태계
+pydantic==2.11.1
+pydantic-settings==2.8.1
+pydantic_core==2.33.0
+langchain==0.3.23
+langchain-chroma==0.2.3
+langchain-community==0.3.20
+langchain-core==0.3.52
+langchain-openai==0.3.12
+langchain-text-splitters==0.3.8
+langchain-upstage==0.6.0
+
+# Chroma 벡터 DB
+chromadb==0.6.3
+
+# OpenAI SDK
+openai==1.70.0
