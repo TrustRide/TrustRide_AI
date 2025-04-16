@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from rag_utils import get_rag_response
+from router.terms import router as term_router
 
 app = FastAPI()
 
@@ -14,6 +15,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(term_router)
 
 @app.post("/generate_ad", response_class=JSONResponse)
 async def generate_ad(

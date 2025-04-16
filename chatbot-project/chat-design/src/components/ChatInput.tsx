@@ -5,19 +5,47 @@ import { Input } from "@/components/ui/input";
 import { Send, Mic } from "lucide-react";
 
 interface ChatInputProps {
-  onSendMessage: (message: string) => void;
+  onSendMessage: (message: string, isBot: boolean) => void;
 }
 
 export const ChatInput = ({ onSendMessage }: ChatInputProps) => {
   const [message, setMessage] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (message.trim()) {
-      onSendMessage(message);
-      setMessage("");
+    const trimmed = message.trim();
+    if (!trimmed) return;
+    
+    onSendMessage(trimmed, false); // 유저 메시지 추가
+    setMessage(""); // 입력창 초기화
+
+    try {
+      const response = await fetch("http://localhost:8000/terms/ask", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ query: trimmed }),
+      });
+
+      if (!response.ok) {
+        throw new Error("서버 오류");
+      }
+
+      const data = await response.json();
+      
+      if (data.answer === "") {
+        onSendMessage("죄송해요, 해당 질문에 대한 답변이 없어요 😢", true);
+      } else {
+        // 챗봇 응답 추가
+        onSendMessage(data.answer, true);
+      }
+
+    } catch (error) {
+      console.error("LLM 요청 실패:", error);
+      onSendMessage("죄송해요, 답변을 불러올 수 없어요 😢", true);
     }
-  };
+  };  
 
   return (
     <form onSubmit={handleSubmit} className="flex items-center gap-2 p-2 border-t">
@@ -45,4 +73,5 @@ export const ChatInput = ({ onSendMessage }: ChatInputProps) => {
       </Button>
     </form>
   );
+
 };
