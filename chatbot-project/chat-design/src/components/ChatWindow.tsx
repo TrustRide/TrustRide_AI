@@ -17,7 +17,7 @@ export const ChatWindow = () => {
       id: 1,
       text: "안녕하세요! 무엇을 도와드릴까요?",
       isBot: true,
-      timestamp: "오늘 14:25"
+      timestamp: new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
     }
   ]);
   

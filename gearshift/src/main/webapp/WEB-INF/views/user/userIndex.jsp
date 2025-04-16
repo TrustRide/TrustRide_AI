@@ -19,7 +19,7 @@
       right: 24px;
       width: 60px;
       height: 60px;
-      background-color: #9a88f8;
+      background-color: #FF5C00;
       color: white;
       border-radius: 50%;
       border: none;
