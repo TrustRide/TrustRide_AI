@@ -4,7 +4,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_upstage import ChatUpstage
 
 # LLM 및 파서 초기화
-llm = ChatUpstage(model="solar-1-mini-chat", api_key="up_Cyk5oYYEV4A6OW26vjPld4WikIfXU")
+llm = ChatUpstage(model="solar-1-mini-chat", api_key="your-api-key!!!!!!!!")
 output_parser = StrOutputParser()
 
 prompt_template = PromptTemplate.from_template("""
