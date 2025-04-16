@@ -96,5 +96,11 @@
         <div class="no-result">추천 결과가 없습니다.</div>
     </c:otherwise>
 </c:choose>
+
+<div style="text-align: center; margin-top: 40px;">
+    <a class="link-btn" href="http://localhost:8080/gearshift/userList">상품 목록으로 가기</a>
+</div>
+
+
 </body>
 </html>
