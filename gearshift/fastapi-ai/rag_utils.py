@@ -5,6 +5,7 @@ from langchain_upstage import ChatUpstage
 
 # LLM 및 파서 초기화
 llm = ChatUpstage(model="solar-1-mini-chat", api_key="up_4CGSrG6veWVgB4OItylUF0q3FACj0")
+
 output_parser = StrOutputParser()
 
 prompt_template = PromptTemplate.from_template("""
