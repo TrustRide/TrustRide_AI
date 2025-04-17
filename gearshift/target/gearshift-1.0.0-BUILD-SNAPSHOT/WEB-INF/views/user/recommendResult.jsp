@@ -97,10 +97,10 @@
     </c:otherwise>
 </c:choose>
 
-
 <div style="text-align: center; margin-top: 40px;">
     <a class="link-btn" href="http://localhost:8080/gearshift/userList">상품 목록으로 가기</a>
 </div>
+
 
 </body>
 </html>

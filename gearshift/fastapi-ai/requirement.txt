@@ -1,14 +1,14 @@
-# FastAPI 전체 기능 포함
+# FastAPI
 fastapi[standard]
 
-# 유틸
+#
 uvicorn
 pandas
 httpx
 tiktoken
 typing-extensions
 
-# LangChain 생태계
+# LangChain
 pydantic==2.11.1
 pydantic-settings==2.8.1
 pydantic_core==2.33.0
@@ -20,8 +20,14 @@ langchain-openai==0.3.12
 langchain-text-splitters==0.3.8
 langchain-upstage==0.6.0
 
-# Chroma 벡터 DB
+# Chroma DB
 chromadb==0.6.3
 
 # OpenAI SDK
 openai==1.70.0
+
+#
+joblib
+jinja2
+scikit-learn
+python-multipart
