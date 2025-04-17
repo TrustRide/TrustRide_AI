@@ -1,0 +1,32 @@
+# Python
+*.pyc
+__pycache__/
+.venv/
+venv/
+env/
+ENV/
+*.egg-info/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.log
+target/
+out/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 환경설정 파일
+.env
