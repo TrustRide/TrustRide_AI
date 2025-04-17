@@ -9,7 +9,7 @@ CHROMA_DB_DIR = "./chroma_db"
 DATA_PATH = os.path.join(os.path.dirname(__file__), "car_data.csv")  # 절대경로 기반 처리
 
 # CSV 로드 및 전처리
-encoding_list = ["utf-8", "utf-8-sig", "cp949", "euc-kr"]
+encoding_list = ["cp949"]
 df = None
 for enc in encoding_list:
     try:
