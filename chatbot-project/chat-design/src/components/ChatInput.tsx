@@ -20,7 +20,7 @@ export const ChatInput = ({ onSendMessage }: ChatInputProps) => {
     setMessage(""); // 입력창 초기화
 
     try {
-      const response = await fetch("http://localhost:8000/terms/ask", {
+      const response = await fetch("http://localhost:8000/chat/term", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

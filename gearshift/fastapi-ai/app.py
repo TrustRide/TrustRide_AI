@@ -1,9 +1,6 @@
-from fastapi import FastAPI, Form
-from pydantic import BaseModel
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
-from router.terms import router as term_router
-from router.market_price import router as price_router
+from chat_router.chat import router as chat_router
 from recommend_router.recommend import router as recommend_router
 from ad_router.ad import router as ad_router
 
@@ -20,8 +17,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(term_router)
-app.include_router(price_router)
+app.include_router(chat_router)
 app.include_router(recommend_router)
 app.include_router(ad_router)
 
