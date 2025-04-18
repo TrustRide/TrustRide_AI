@@ -30,3 +30,7 @@ Thumbs.db
 
 # 환경설정 파일
 .env
+gearshift/fastapi-ai/news_router/chroma_full_db/c4452535-ee62-418f-be7f-4c0ae25e8220/data_level0.bin
+gearshift/fastapi-ai/news_router/chroma_full_db/chroma.sqlite3
+gearshift/fastapi-ai/news_router/chroma_full_db/chroma.sqlite3
+/gearshift/fastapi-ai/news_router/chroma_full_db
