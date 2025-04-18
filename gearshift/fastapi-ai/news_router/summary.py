@@ -50,7 +50,7 @@ def summarize_pdf(file: UploadFile = File(...)):
     chunks = splitter.split_documents(docs)
 
     if not chunks:
-        return {"summary": "❌ PDF에서 요약할 내용을 추출하지 못했습니다."}
+        return {"summary": " PDF에서 요약할 내용을 추출하지 못했습니다."}
 
     prompt = PromptTemplate.from_template("""
 다음 내용을 3문장 이내로 요약하세요:
