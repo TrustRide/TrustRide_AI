@@ -1,11 +1,9 @@
 package com.fastcampus.gearshift.dao;
 
-import com.fastcampus.gearshift.dto.CarDto;
-import com.fastcampus.gearshift.dto.CarInfoDto;
-import com.fastcampus.gearshift.dto.CarListDto;
-import com.fastcampus.gearshift.dto.UserDto;
+import com.fastcampus.gearshift.dto.*;
 
 import java.util.List;
+import java.util.Map;
 
 public interface PHolderDao {
 
@@ -35,5 +33,27 @@ public interface PHolderDao {
 
     int getCarCountByCate(String cateCode);
 
+    //뉴스 작성
+    int insert(NewsDto dto) throws Exception;
 
+    //뉴스 전체 조회
+    List<NewsDto> selectAll() throws Exception;
+
+    //뉴스 지정된 번호 조회 (상세 조회)
+    NewsDto newsSelect(Integer newsId) throws Exception;
+
+    //이미지 뉴스
+    int imageInsert(int newsId, String newsImageUrl,boolean isThumbnail);
+
+    List<NewsImageDto> selectByNewsId(int newsId);
+
+    String selectThumbnailByNewsId(int newsId);
+
+    //이미지 삭제
+     void deleteNewsImages(int newsId) throws Exception;
+     //뉴스 삭제
+    void delete(int newsId) throws Exception;
+
+    List<NewsDto> getPagedNewsList(Map<String, Object> params);
+    int getNewsCount();
 }

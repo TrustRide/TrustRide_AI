@@ -23,6 +23,7 @@
         <typeAlias type="com.fastcampus.gearshift.dto.LRefundDTO" alias="LRefundDTO"></typeAlias>
         <typeAlias type="com.fastcampus.gearshift.dto.CarDetailDto" alias="CarDetailDto"></typeAlias>
         <typeAlias type="com.fastcampus.gearshift.dto.LHolderDTO" alias="LHolderDTO"></typeAlias>
+        <typeAlias type="com.fastcampus.gearshift.dto.NewsDto" alias="NewsDto"></typeAlias>
 
     </typeAliases>
 </configuration>

@@ -1,9 +1,6 @@
 package com.fastcampus.gearshift.dao;
 
-import com.fastcampus.gearshift.dto.CarDto;
-import com.fastcampus.gearshift.dto.CarInfoDto;
-import com.fastcampus.gearshift.dto.CarListDto;
-import com.fastcampus.gearshift.dto.UserDto;
+import com.fastcampus.gearshift.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,7 +86,62 @@ public class PHolderDaoImpl implements  PHolderDao {
 
     }
 
+    //뉴스 작성
+    @Override
+    public int insert(NewsDto dto) throws Exception {
+        return session.insert(namespace+"insert",dto);
+    }
+    //뉴스 전체 조회
+    @Override
+    public List<NewsDto> selectAll() throws Exception {//전체 조회
+        return session.selectList(namespace+"selectAll");
+    }
 
+    //뉴스 상세 조회
+    @Override
+    public NewsDto newsSelect(Integer newsId) throws Exception {
+        return session.selectOne(namespace+"newsSelect",newsId);
+    }
+
+    @Override
+    public int imageInsert(int newsId, String newsImageUrl, boolean isThumbnail) {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("newsId", newsId);
+        paramMap.put("newsImageUrl", newsImageUrl);
+        paramMap.put("isThumbnail", isThumbnail);
+        return session.insert(namespace + "imageInsert", paramMap);
+    }
+
+    @Override
+    public List<NewsImageDto> selectByNewsId(int newsId) {
+        return session.selectList(namespace+"selectByNewsId",newsId);
+    }
+
+    @Override
+    public String selectThumbnailByNewsId(int newsId) {
+        return session.selectOne(namespace+"selectThumbnailByNewsId",newsId);
+
+    }
+
+    @Override
+    public void deleteNewsImages(int newsId) throws Exception {
+        session.delete(namespace+"deleteNewsImages",newsId);
+    }
+
+    @Override
+    public void delete(int newsId) throws Exception {
+    session.delete(namespace+"newsDelete",newsId);
+    }
+
+    @Override
+    public List<NewsDto> getPagedNewsList(Map<String, Object> params) {
+        return session.selectList(namespace+"getPagedNewsList",params);
+    }
+
+    @Override
+    public int getNewsCount() {
+        return session.selectOne(namespace+"getNewsCount");
+    }
 
 }
 
