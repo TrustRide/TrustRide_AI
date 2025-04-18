@@ -14,7 +14,7 @@
             <ul>
                 <li><a href="${pageContext.request.contextPath}/userList">내차사기</a></li>
                 <li><a href="${pageContext.request.contextPath}/review">상품리뷰</a></li>
-                <li><a href="${pageContext.request.contextPath}/newsList">매거진</a></li>
+                <li><a href="/gearshift/newsList">매거진</a></li>
 
                 <c:if test="${not empty sessionScope.loginUser}">
                     <li><strong>${sessionScope.loginUser.userName}</strong>님</li>

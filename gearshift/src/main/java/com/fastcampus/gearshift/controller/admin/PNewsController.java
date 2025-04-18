@@ -33,7 +33,7 @@ public class PNewsController {
         return "admin/newsRegister";
     }
 
-
+  
     @PostMapping("/newsRegister")
     public String write(@ModelAttribute NewsDto newsDto,
                         @RequestParam("imageFiles") List<MultipartFile> imageFiles,

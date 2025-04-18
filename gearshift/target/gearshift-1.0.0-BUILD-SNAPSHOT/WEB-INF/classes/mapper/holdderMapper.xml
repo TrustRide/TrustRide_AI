@@ -14,6 +14,7 @@
         where user_id = #{userId};
     </select>
 
+
     <!-- 차량 리스트 조회 -->
     <!-- 전체 차량 개수 조회 -->
     <select id="getCarCount" resultType="int">
@@ -149,6 +150,72 @@
         WHERE is_deleted = false AND cate_code = #{cateCode}
     </select>
 
+
+    <!-- 뉴스 업로드 -->
+    <insert id="insert" parameterType="NewsDto" useGeneratedKeys="true" keyProperty="newsId">
+        INSERT INTO news(news_title, news_content)
+        VALUES (#{newsTitle}, #{newsContent});
+    </insert>
+
+    <!-- 뉴스 전체 조회 -->
+    <select id="selectAll" resultType="com.fastcampus.gearshift.dto.NewsDto">
+        SELECT n.news_id, n.news_title, n.news_content, n.news_reg_date,
+               ni.news_image_url AS newsThumbnailUrl
+        FROM news n
+                 LEFT JOIN news_image ni ON n.news_id = ni.news_id AND ni.news_is_thumbnail = 1
+        ORDER BY n.news_id DESC;
+    </select>
+
+    <!-- 뉴스 상세 조회 -->
+    <select id="newsSelect" parameterType="Integer" resultType="NewsDto">
+        select news_id,news_title,news_content,news_reg_date
+        from news
+        where news_id = #{news_id};
+    </select>
+
+    <insert id="imageInsert" parameterType="map">
+        INSERT INTO news_image(news_id, news_image_url, news_is_thumbnail)
+        VALUES (#{newsId}, #{newsImageUrl}, #{isThumbnail});
+    </insert>
+
+    <select id="selectByNewsId" resultType="com.fastcampus.gearshift.dto.NewsImageDto">
+        SELECT news_image_id, news_id, news_image_url, news_is_thumbnail
+        FROM news_image
+        WHERE news_id = #{newsId}
+    </select>
+
+    <select id="selectThumbnailByNewsId" resultType="String">
+        SELECT news_image_url
+        FROM news_image
+        WHERE news_id = #{newsId}
+          AND news_is_thumbnail = true
+            LIMIT 1
+    </select>
+
+    <!-- 이미지 먼저 삭제 -->
+    <delete id="deleteNewsImages" parameterType="int">
+        DELETE FROM news_image WHERE news_id= #{newsId}
+    </delete>
+
+    <!-- 본문 삭제 -->
+    <delete id="newsDelete" parameterType="int">
+        DELETE FROM news WHERE news_id = #{newsId}
+    </delete>
+
+    <!-- 페이징 기능 추가 -->
+    <select id="getPagedNewsList" resultType="com.fastcampus.gearshift.dto.NewsDto">
+        SELECT n.news_id, n.news_title, n.news_content, n.news_reg_date,
+               ni.news_image_url AS newsThumbnailUrl
+        FROM news n
+                 LEFT JOIN news_image ni ON n.news_id = ni.news_id AND ni.news_is_thumbnail = true
+        ORDER BY n.news_id DESC
+            LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
+    <!-- 전체 뉴스 개수 조회 -->
+    <select id="getNewsCount" resultType="int">
+        SELECT COUNT(*) FROM news
+    </select>
 
 
     <resultMap id="CarInfoWithImagesResultMap" type="com.fastcampus.gearshift.dto.CarInfoDto">

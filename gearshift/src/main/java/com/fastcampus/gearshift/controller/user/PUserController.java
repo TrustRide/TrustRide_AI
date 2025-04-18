@@ -240,6 +240,7 @@ public class PUserController {
         return "user/newsList";
     }
 
+
     //상세 조회
     @GetMapping("/newsDetail")
     public String read(@RequestParam("newsId") Integer newsId, Model model) throws Exception {
