@@ -20,18 +20,18 @@ scaler = joblib.load("recommend_router/scaler.pkl")
 car_df = pd.read_csv("recommend_router/car_data_clustered.csv")
 
 
-# 연령대+성별 매핑표
+# 연령대+성별 매핑표 (k=5 기준)
 age_gender_cluster_map = {
-    ("20", "남성"): 2,
-    ("20", "여성"): 2,
-    ("30", "남성"): 0,
-    ("30", "여성"): 2,
-    ("40", "남성"): 1,
-    ("40", "여성"): 0,
-    ("50", "남성"): 1,
-    ("50", "여성"): 1,
-    ("60", "남성"): 1,
-    ("60", "여성"): 1,
+    ("20", "남성"): 1,  # 사회초년생 ➔ 초저가 고주행차
+    ("20", "여성"): 1,  # 사회초년생 ➔ 초저가 고주행차
+    ("30", "남성"): 0,  # 실속형 중고차 선호
+    ("30", "여성"): 3,  # 준신차급 중형차 선호
+    ("40", "남성"): 3,  # 준신차급 중형차 or 신차급 SUV
+    ("40", "여성"): 3,  # 준신차급 중형차 선호
+    ("50", "남성"): 2,  # 신차급 SUV/대형차 선호
+    ("50", "여성"): 2,  # 신차급 SUV/대형차 선호
+    ("60", "남성"): 2,  # 신차급 SUV/대형차 (장거리 주행)
+    ("60", "여성"): 2,  # 신차급 SUV/대형차 (장거리 주행)
 }
 
 # 목적 → 예상 주행거리 맵핑
@@ -41,25 +41,38 @@ purpose_mileage_map = {
     "nearby": 8000       # 근거리
 }
 
-# 예산 파싱 함수
+# 예산 파싱 함수 (수정 버전)
 def parse_budget_range(budget_str):
     try:
-        if '-' in budget_str:
+        if budget_str == "0-9999":
+            return 0, 99999  # "상관없음" → 무제한 허용
+        elif '-' in budget_str:
             min_b, max_b = budget_str.split('-')
-            return int(min_b), int(max_b)
-    except:
-        pass
-    return 0, 99999999
+            return int(min_b) - 500 , int(max_b) + 500  # 만원 단위 → 원화 단위
+    except Exception as e:
+        print(f"budget parsing error: {e}")
+    return 0, 99999  # 파싱 실패하면 넓게 허용
 
 
-# 0번	중간 가격대, 준수한 연식, 가성비형
-# 1번	고가격, 신차급, 짧은 주행거리
-# 2번	초저가, 오래된 연식, 높은 주행거리
+
+
+# 0번	중고차 (가성비 세단/SUV)
+# 1번	초저가 고주행차 (연습용/사회초년생)
+# 2번	신차급 SUV/대형차 (4000만원 이상)
+# 3번	준신차급 중형차/SUV (2000~3000만원대)
+# 4번	슈퍼카/럭셔리 수입차 (5000만원 이상)
+
+
+# recommend_by_cluster 함수 수정 부분
 
 def recommend_by_cluster(age, gender, budget_min, budget_max, brand_type, purpose):
+
+    age = str(age)
     cluster = age_gender_cluster_map.get((age, gender))
     if cluster is None:
-        cluster = random.choice([0, 1, 2])  # (k=3이니까)
+        cluster = random.choice([0, 1, 2, 3, 4])
+
+
 
     filtered = car_df[
         (car_df['cluster_label'] == cluster) &
@@ -74,11 +87,14 @@ def recommend_by_cluster(age, gender, budget_min, budget_max, brand_type, purpos
 
     # 🚗 목적(purpose)에 따라 주행거리 추가 필터링
     if purpose == "travel":
-        # 주행거리 10만 km 이하 차량만 추천
         filtered = filtered[filtered['주행거리_clean'] <= 100000]
     elif purpose == "nearby":
-        # nearby는 특별히 추가 주행거리 조건 없음 (오래된 차도 추천 허용)
         pass
+
+    # ➡ 수정: 특정 나이대(30 - 남성) + 예산 5000 이상일 때만 4번 클러스터로 변경
+    if age == "30" and gender == "남성" and budget_min >= 5000:
+        cluster = 4
+
 
     if not filtered.empty:
         selected = filtered.sample(min(3, len(filtered)), random_state=random.randint(0, 10000))
@@ -93,7 +109,6 @@ def recommend_by_cluster(age, gender, budget_min, budget_max, brand_type, purpos
             })
         return results
     else:
-        # fallback
         fallback = car_df[car_df['cluster_label'] == cluster]
         if not fallback.empty:
             selected = fallback.sample(min(3, len(fallback)), random_state=random.randint(0, 10000))
@@ -106,6 +121,7 @@ def recommend_by_cluster(age, gender, budget_min, budget_max, brand_type, purpos
             } for idx, row in selected.iterrows()]
         else:
             return []
+
 
 
 # FastAPI POST 엔드포인트
