@@ -50,6 +50,7 @@
             padding: 10px 15px;
             border-radius: 6px;
             transition: background-color 0.3s;
+            margin-top: 10px;
         }
         .link-btn:hover {
             background-color: #d35400;
@@ -60,10 +61,22 @@
             margin-top: 40px;
             color: #b30000;
         }
+        .reason-block {
+            text-align: center;
+            font-size: 16px;
+            font-style: italic;
+            color: #555;
+            margin-top: 40px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body>
-<h1>🚘 중고차 추천 결과 (TOP 3)</h1>
+
+<h1>🚗 중고차 추천 결과 (TOP 3)</h1>
 
 <c:choose>
     <c:when test="${not empty results}">
@@ -91,6 +104,7 @@
                 </c:choose>
             </div>
         </c:forEach>
+
     </c:when>
     <c:otherwise>
         <div class="no-result">추천 결과가 없습니다.</div>
@@ -100,7 +114,6 @@
 <div style="text-align: center; margin-top: 40px;">
     <a class="link-btn" href="http://localhost:8080/gearshift/userList">상품 목록으로 가기</a>
 </div>
-
 
 </body>
 </html>

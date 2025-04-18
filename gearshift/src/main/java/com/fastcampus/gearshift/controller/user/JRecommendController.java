@@ -24,53 +24,48 @@ import java.util.List;
 public class JRecommendController {
 
     @Value("${recommend.api.url}")
-    private String pythonApiUrl;
+    private String pythonApiUrl;                 // e.g. http://localhost:8000/recommend
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    // 설문 폼
+    /** 설문 폼 페이지 */
     @GetMapping("/survey/form")
     public String showSurveyForm() {
-        return "user/surveyForm"; // JSP 경로
+        return "user/surveyForm";
     }
 
-    // 설문 폼 제출 → FastAPI로 추천 요청
+    /** 설문 제출 → FastAPI 추천 요청 → 결과 JSP */
     @PostMapping("/survey/submit")
     public String processSurvey(@ModelAttribute RecommendRequest form, Model model) {
+
         try {
-            // 1. 요청 헤더
+            /* 1) 헤더 */
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-            // 2. 요청 바디 구성
+            /* 2) 바디 (FastAPI가 요구하는 필드만) */
             MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+            body.add("age",        form.getAge());        // ✨ 추가
+            body.add("gender",     form.getGender());     // ✨ 추가
+            body.add("budget",     form.getBudget());
+            body.add("purpose",    form.getPurpose());
             body.add("brand_type", form.getBrand_type());
-            body.add("budget", form.getBudget());
-            body.add("purpose", form.getPurpose());
-            body.add("passenger", form.getPassenger());
-            body.add("year_preference", form.getYear_preference());
 
-            HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(body, headers);
-
-            // 3. FastAPI 호출
+            /* 3) 요청 */
+            HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(body, headers);
             ResponseEntity<String> response = restTemplate.exchange(
-                    pythonApiUrl,
-                    HttpMethod.POST,
-                    requestEntity,
-                    String.class
-            );
+                    pythonApiUrl, HttpMethod.POST, entity, String.class);
 
-            // 4. JSON 결과 파싱
+            /* 4) 결과 파싱 */
             ObjectMapper mapper = new ObjectMapper();
-            List<RecommendResult> resultList =
-                    Arrays.asList(mapper.readValue(response.getBody(), RecommendResult[].class));
+            List<RecommendResult> results = Arrays.asList(
+                    mapper.readValue(response.getBody(), RecommendResult[].class));
 
-            // 5. 결과 뷰로 전달
-            model.addAttribute("results", resultList);
-            return "user/recommendResult"; // 결과 JSP
+            model.addAttribute("results", results);
+            return "user/recommendResult";
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("🚨 추천 요청 실패", e);
             model.addAttribute("results", Collections.emptyList());
             model.addAttribute("error", "추천 요청 중 오류가 발생했습니다.");
             return "user/recommendResult";
