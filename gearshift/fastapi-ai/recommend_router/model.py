@@ -55,7 +55,7 @@ X_scaled = scaler.fit_transform(X)
 # ------------------------------------
 # 4. KMeans 군집화
 # ------------------------------------
-kmeans = KMeans(n_clusters=3, random_state=42, n_init=10)
+kmeans = KMeans(n_clusters=5, random_state=42, n_init=10)
 df['cluster_label'] = kmeans.fit_predict(X_scaled)
 
 # ------------------------------------
@@ -65,4 +65,4 @@ joblib.dump(kmeans, 'kmeans_model.pkl')       # 모델 저장
 joblib.dump(scaler, 'scaler.pkl')              # 스케일러 저장
 df.to_csv('car_data_clustered.csv', index=False)  # 군집 컬럼 포함 데이터 저장
 
-print("✅ 모델 학습 및 저장 완료!")
+print("모델 학습 및 저장 완료")
