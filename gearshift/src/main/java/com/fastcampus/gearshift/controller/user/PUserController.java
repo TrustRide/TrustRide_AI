@@ -14,9 +14,18 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.UUID;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Controller
@@ -32,6 +41,8 @@ public class PUserController {
 
 
     private final PHolderService pHolderService;
+
+    private static final Logger logger = LoggerFactory.getLogger(PUserController.class);
 
 
     //메인
@@ -80,6 +91,7 @@ public class PUserController {
                 car.setIsWished(wished);
             }
         }
+        
         model.addAttribute("userCarList", userCarList);
 
         // 카테고리 목록 가져오기
@@ -125,8 +137,6 @@ public class PUserController {
         carInfoDto.setIsJointOwnership(isJointHolder);        // 공동 명의 여부
 
 
-
-
         model.addAttribute("userDto", selectedUser);
         model.addAttribute("carDto", carInfoDto);
 
@@ -134,13 +144,10 @@ public class PUserController {
     }
 
 
-
     //차량 상세페이지 이동
     @GetMapping("/carDetail")
     public String showCarDetail(@RequestParam("carInfoId") Integer carInfoId, Model model,CarInfoDto dto) throws Exception {
         CarInfoDto carInfoDto = pHolderService.carDetailSelect(carInfoId);
-
-
 
         model.addAttribute("carDto", carInfoDto);
         model.addAttribute("dto", dto);
@@ -150,6 +157,7 @@ public class PUserController {
     }
 
 
+
     //차량 명의
     @GetMapping("/titleHolder")
     public String getHolder(
@@ -157,16 +165,20 @@ public class PUserController {
             Model model,
             HttpSession session
     ) throws Exception {
-
-        // 여기를 "loginUser"로 변경해야 세션에서 제대로 꺼낼 수 있음
-
+        //세션 로그인 유저 확인
+        Object loginUser = session.getAttribute("loginUser");
+        if(loginUser == null){
+            //로그인 x 면 로그인 페이지 이동
+           return "redirect:http://localhost:8080/gearshift/login.do";
+        }
+        //차량 정보 조회
         CarInfoDto carInfoDto = pHolderService.carDetailSelect(carInfoId);
-
         model.addAttribute("carDto", carInfoDto);
 
         return "user/userTitleHolder";
 
     }
+
 
 
     //메인화면 + 상품리스트 검색
@@ -177,11 +189,70 @@ public class PUserController {
 
         List<CarListDto> searchResults = pHolderService.searchCarsByTitle(searchQuery);
 
-        model.addAttribute("userCarList",searchResults);
+        //검색 결과 없으면 메시지
+        if(searchResults == null || searchResults.isEmpty()){
+            model.addAttribute("errorMessage","검색 결과가 없습니다.");
+        }else{
+            model.addAttribute("userCarList",searchResults);
+        }
 
         return "user/userCarList";
 
     }
+
+    @GetMapping("/testError")
+    public String testError() throws Exception {
+        throw new Exception("테스트용 예외 발생!");
+    }
+
+
+//    //예외 메서드
+//    @ExceptionHandler(Exception.class)
+//    public String handleSearchException(Exception ex, Model model){
+//   logger.error("PUserController 내부 예외 발생: {}",ex.getMessage(),ex);
+//   model.addAttribute("errorMessage","죄송합니다. 요청 처리 중 문제가 발생했어요. 다시 시도 해주세요.");
+//        return "error/404";
+//    }
+
+
+    //요약 테스트
+    @GetMapping("/news2")
+    public String news(){
+        return "user/newsDetail";
+    }
+
+
+    @GetMapping("/newsList")
+    public String newsList(Model model,
+                           @RequestParam(defaultValue = "1") int page,
+                           @RequestParam(defaultValue = "9") int pageSize) {
+
+        int offset = (page - 1) * pageSize;
+
+        List<NewsDto> list = pHolderService.getPagedNewsList(offset, pageSize);
+        int totalNewsCount = pHolderService.getNewsCount();
+        int totalPages = (int) Math.ceil((double) totalNewsCount / pageSize);
+
+        model.addAttribute("list", list);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+
+        return "user/newsList";
+    }
+
+    //상세 조회
+    @GetMapping("/newsDetail")
+    public String read(@RequestParam("newsId") Integer newsId, Model model) throws Exception {
+        NewsDto newsDto = pHolderService.newsRead(newsId);
+        List<NewsImageDto> imageList = pHolderService.getImagesByNewsId(newsId); // ✅ 다중 이미지 조회
+
+        model.addAttribute("newsDto", newsDto);
+        model.addAttribute("imageList", imageList);
+
+        return "user/newsContent";
+    }
+
+
 
 
 
