@@ -61,7 +61,7 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.08);
     }
 
-    .btn-back, .btn-delete {
+    .btn-back, .btn-summary {
       margin-top: 20px;
       display: inline-block;
       padding: 10px 20px;
@@ -80,14 +80,26 @@
       background-color: #0056b3;
     }
 
-    .btn-delete {
-      background-color: #dc3545;
+    .btn-summary {
+      background-color: #28a745;
       color: white;
       margin-left: 10px;
     }
 
-    .btn-delete:hover {
-      background-color: #c82333;
+    .btn-summary:hover {
+      background-color: #1e7e34;
+    }
+
+    .summary-box {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #f0f8ff;
+      border-left: 5px solid #28a745;
+      border-radius: 8px;
+      font-size: 16px;
+      color: #333;
+      line-height: 1.6;
+      white-space: pre-line;
     }
   </style>
   <link rel="stylesheet" href="<c:url value='/resources/css/user/header.css' />">
@@ -108,11 +120,11 @@
 <div class="container">
 
   <!-- 본문 내용 -->
-  <div class="content">
+  <div class="content" id="newsContent">
     <c:out value="${newsDto.newsContent}" escapeXml="false"/>
   </div>
 
-  <!-- 다중 이미지 출력 (에디터 외 별도 이미지가 있을 경우) -->
+  <!-- 다중 이미지 출력 -->
   <c:if test="${not empty imageList}">
     <div class="news-images">
       <c:forEach var="img" items="${imageList}">
@@ -121,15 +133,46 @@
     </div>
   </c:if>
 
-  <!-- 버튼 영역 -->
+  <!-- ✅ 요약 결과 박스 -->
+  <div id="summaryResult" class="summary-box" style="display:none;"></div>
+
+  <!-- 버튼 -->
   <div>
     <a class="btn-back" href="javascript:history.back()">← 목록으로</a>
-
+    <button class="btn-summary" onclick="summarizeNews()">📝 요약해줘</button>
   </div>
 </div>
 
-
-
 <%@ include file="/WEB-INF/views/user/include/footer.jsp" %>
+
+<!-- ✅ 요약 요청 스크립트 -->
+<script>
+  function summarizeNews() {
+    const content = document.getElementById("newsContent").innerText;
+
+    fetch("http://localhost:8000/direct-summary", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ content: content })
+    })
+            .then(response => response.json())
+            .then(data => {
+              const summaryBox = document.getElementById("summaryResult");
+              summaryBox.style.display = "block";
+
+              if (typeof data.summary === "string") {
+                summaryBox.innerText = "📌 요약 결과:\n" + data.summary;
+              } else if (data.summary?.content) {
+                summaryBox.innerText = "📌 요약 결과:\n" + data.summary.content;
+              } else {
+                summaryBox.innerText = "⚠ 요약 결과를 불러올 수 없습니다.";
+              }
+            })
+            .catch(error => {
+              alert("요약 요청 중 오류 발생: " + error.message);
+            });
+  }
+</script>
+
 </body>
 </html>

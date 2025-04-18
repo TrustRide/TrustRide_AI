@@ -11,35 +11,38 @@ app = FastAPI()
 
 @app.post("/pdf-summary")
 def summarize_pdf(file: UploadFile = File(...)):
-    # 파일 저장
+    # ✅ 업로드 디렉토리 생성
     os.makedirs("uploaded", exist_ok=True)
-    with open("uploaded/temp.pdf", "wb") as f:
+    file_path = os.path.join("uploaded", "temp.pdf")
+
+    # ✅ 파일 저장
+    with open(file_path, "wb") as f:
         f.write(file.file.read())
 
-    # PDF 로드
-    loader = UnstructuredPDFLoader("uploaded/temp.pdf", mode="elements")
+    # ✅ PDF 로딩
+    loader = UnstructuredPDFLoader(file_path, mode="elements")
     docs = loader.load()
 
-    # 청크 분할
+    # ✅ 문서 청크 분할
     splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
     chunks = splitter.split_documents(docs)
 
     if not chunks:
-        return {"summary": "PDF에서 텍스트를 추출할 수 없습니다."}
+        return {"summary": "❌ PDF에서 요약할 내용을 추출하지 못했습니다."}
 
-    # 프롬프트 및 체인 구성
+    # ✅ 프롬프트 템플릿 정의
     prompt = PromptTemplate.from_template("""
-다음 내용을 3문장 이내로 요약하세요.
+다음 내용을 3문장 이내로 요약하세요:
 {context}
 """)
 
-    # ✅ 오류 방지: RunnableSequence로 체인 구성
-    chain = RunnableSequence(steps=[
+    # ✅ LLM 체인 구성
+    chain = RunnableSequence([
         prompt,
         ChatUpstage(model="solar-mini"),
         StrOutputParser()
     ])
 
-    # 요약 실행
+    # ✅ 체인 실행
     summary = chain.invoke({"context": chunks[0].page_content})
     return {"summary": summary}
