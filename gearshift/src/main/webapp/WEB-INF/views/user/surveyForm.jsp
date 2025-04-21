@@ -78,7 +78,9 @@
         <label><input type="radio" name="budget" value="1000-1499"> 1000만원 ~ 1500만원</label>
         <label><input type="radio" name="budget" value="1500-1999"> 1500만원 ~ 2000만원</label>
         <label><input type="radio" name="budget" value="2000-2999"> 2000만원 ~ 3000만원</label>
-        <label><input type="radio" name="budget" value="3000-9999"> 3000만원 이상</label>
+        <label><input type="radio" name="budget" value="3000-3999"> 3000만원 ~ 4000만원</label>
+        <label><input type="radio" name="budget" value="4000-4999"> 4000만원 ~ 4999만원</label>
+        <label><input type="radio" name="budget" value="5000-9999"> 5000만원 이상</label>
         <label><input type="radio" name="budget" value="0-9999"> 상관없음</label>
     </fieldset>
 
