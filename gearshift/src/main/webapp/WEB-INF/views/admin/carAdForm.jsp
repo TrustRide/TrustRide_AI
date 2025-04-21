@@ -13,7 +13,11 @@
     <span>🚗 오토 스크라이브</span>
     <span class="text-sm">자동차 문구로 AI 글 생성</span>
 </header>
+<!-- 헤더 포함 -->
+<jsp:include page="include/header.jsp"/>
 
+<!-- 사이드바 포함 -->
+<jsp:include page="include/sidebar.jsp"/>
 <main class="flex-1 flex flex-col items-center justify-center px-4">
     <div class="max-w-2xl w-full text-center">
         <h1 class="text-3xl font-bold text-gray-800 mt-10">자동차 문구 생성기</h1>
