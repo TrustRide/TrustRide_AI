@@ -1,74 +1,96 @@
-from langchain_community.vectorstores import Chroma
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_core.documents import Document
-from langchain_upstage import ChatUpstage, UpstageEmbeddings
+import pandas as pd
+from langchain_upstage import ChatUpstage
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
-import pandas as pd
-import os
 from . import settings
 
-# 프롬프트 템플릿
-prompt_template = PromptTemplate.from_template("""
-당신은 중고차 시세 전문가입니다.
-사용자 질문: {question}
-
-관련 차량 시세:
-{context}
-
-위 정보를 참고하여 현재 사용자가 제시한 가격이 시세보다 싼지 비싼지 자연어로 간결하게 설명해 주세요.
-""")
-
-# Upstage LLM 및 임베딩 모델 초기화
+# LLM 초기화
 llm = ChatUpstage(api_key=settings.LLM_API_KEY, model="solar-1-mini-chat")
 output_parser = StrOutputParser()
-embeddings = UpstageEmbeddings(model="solar-embedding-1-large", api_key=settings.LLM_API_KEY)
 
-# 벡터 DB 초기화
-if os.path.exists(settings.CHROMA_DB_DIR):
-    # 기존 백터 DB가 있다면 로드
-    vector_store = Chroma(persist_directory=settings.CHROMA_DB_DIR, embedding_function=embeddings)
-else:
-    # 기존 백터 DB가 없다면 새로 생성
-    df = pd.read_csv(settings.CSV_PATH)
-    # 컬럼명 통일 ( 예 : 한글 -> 영어)
-    df = df.rename(columns={'모델명': 'model', '연료': 'fuel_type', '트림': 'trim', '가격': 'price'})
-    
-    # 각 행을 문서로 변환 
-    texts = [
-        Document(page_content=f"모델: {row['model']}, 연료: {row['fuel_type']}, 트림: {row['trim']}, 가격: {row['price']}만원")
-        for _, row in df.iterrows()
-    ]
+# 자연어 응답 템플릿
+response_prompt = PromptTemplate.from_template("""
+당신은 중고차 시세 전문가입니다.
 
-     # 문서를 일정 길이로 분할
-    splitter = RecursiveCharacterTextSplitter(chunk_size=200, chunk_overlap=20)
-    docs = splitter.split_documents(texts)
+{filtered_info} 차량을 {offered_price}만원에 구매하려고 합니다.
+이 차량의 평균 시세는 {avg_price}만원입니다.
+{verdict}
+위 정보를 바탕으로 사용자에게 친절하게 설명해주세요.
+""")
 
-    # 백터 DB에 저장
-    vector_store = Chroma.from_documents(docs, embeddings, persist_directory=settings.CHROMA_DB_DIR)
-
-# === RAG 응답 생성 함수 ===
 def get_rag_response(info):
+    # 1. 데이터 로드 및 정리
+    df = pd.read_csv(settings.CSV_PATH)
+    df = df.rename(columns={'모델명': 'model', '연료': 'fuel_type', '트림': 'trim', '가격': 'price'})
 
-    # 사용자가 입력한 정보 기반으로 쿼리 생성
-    query = f"{info['model']} {info['fuel_type']} 중고차 시세"
-    
-    # 유사한 문서 5개 검색
-    docs = vector_store.similarity_search(query, k=5)
+    # 🔥 공백 제거 필수! (이 줄 추가)
+    df['model'] = df['model'].astype(str).str.strip()
+    df['fuel_type'] = df['fuel_type'].astype(str).str.strip()
+    df['trim'] = df['trim'].astype(str).str.strip()
 
-    # 문서 없음 + context가 너무 짧거나 공백뿐인 경우 처리
-    context = "\n".join([doc.page_content for doc in docs]).strip()
+    # 2. 입력 정보 정리
+    model = info.get('model', '').strip()
+    fuel = info.get('fuel_type', '').strip()
+    trim = info.get('trim', '').strip() if 'trim' in info else ''
+    offer = float(info.get('offered_price'))
 
-    # 검색된 문서들을 문맥으로 구성
-    context = "\n".join([doc.page_content for doc in docs])
+    # 3. 조건별 필터링
+    filtered = pd.DataFrame()
 
-    # 사용자 질문 구성 
-    question = f"{info['model']} {info['fuel_type']} 차량을 {info['offered_price']}만원에 구매하려고 합니다. 괜찮은 가격인가요?"
-    
-    # 최종 프롬프트 구성
-    prompt = prompt_template.format(question=question, context=context)
+    # 우선순위 1: 모델 + 연료 + 트림
+    if model and fuel and trim:
+        filtered = df[
+            (df['model'] == model) &
+            (df['fuel_type'] == fuel) &
+            (df['trim'] == trim)
+            ]
 
-    # LLM 호출 및 결과 리턴 
-    result = llm | output_parser
-    return result.invoke(prompt)
+    # 우선순위 2: 모델 + 연료
+    if filtered.empty and model and fuel:
+        filtered = df[
+            (df['model'] == model) &
+            (df['fuel_type'] == fuel)
+            ]
 
+    # 우선순위 3: 모델 + 트림
+    if filtered.empty and model and trim:
+        filtered = df[
+            (df['model'] == model) &
+            (df['trim'] == trim)
+            ]
+
+    # 우선순위 4: 모델만
+    if filtered.empty and model:
+        filtered = df[df['model'] == model]
+
+    # 4. 결과 없으면 사과 메시지
+    if filtered.empty:
+        return "죄송하지만 제공된 정보로는 정확한 판단이 어렵습니다."
+
+    # 5. 평균 시세 계산
+    avg_price = filtered['price'].astype(float).mean()
+
+    # 6. 가격 비교 판단
+    if offer < avg_price:
+        verdict = "제시한 가격이 시세보다 저렴합니다. 좋은 조건이에요!"
+    elif offer > avg_price:
+        verdict = "제시한 가격이 시세보다 비쌉니다. 신중히 고려해보세요."
+    else:
+        verdict = "제시한 가격은 시세와 거의 같습니다."
+
+    # 7. 차량 정보 조합
+    filtered_info = f"{model}"
+    if fuel:
+        filtered_info += f" ({fuel})"
+    if trim:
+        filtered_info += f" [{trim}]"
+
+    # 8. 프롬프트에 적용 후 LLM 응답
+    prompt = response_prompt.format(
+        filtered_info=filtered_info,
+        offered_price=offer,
+        avg_price=int(avg_price),
+        verdict=verdict
+    )
+
+    return (llm | output_parser).invoke(prompt)
