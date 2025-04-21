@@ -1,5 +1,3 @@
-from fastapi import APIRouter
-from pydantic import BaseModel
 from langchain_upstage import ChatUpstage, UpstageEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain_core.prompts import PromptTemplate

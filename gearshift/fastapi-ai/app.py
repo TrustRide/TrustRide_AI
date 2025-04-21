@@ -1,6 +1,5 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
 from chat_router.chat import router as chat_router
 from recommend_router.recommend import router as recommend_router
 from ad_router.ad import router as ad_router
