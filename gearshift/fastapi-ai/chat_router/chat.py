@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from typing import Optional
 from pydantic import BaseModel
 from . import extractor
 from . import rag
@@ -16,8 +17,9 @@ class UserQuery(BaseModel):
 
 class ParsedCarInfo(BaseModel):
     model: str
-    fuel_type: str
+    fuel_type: Optional[str] = ""
     offered_price: int
+    trim: Optional[str] = ""
 
 @router.post("/price")
 def chat(query: UserQuery):
