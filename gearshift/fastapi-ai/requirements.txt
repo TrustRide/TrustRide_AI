@@ -34,3 +34,4 @@ python-multipart
 
 cryptography
 
+PyMySQL==1.1.1
