@@ -1,37 +1,31 @@
-# FastAPI
-fastapi[standard]
-
-#
+# FastAPI & Web
+fastapi
 uvicorn
-pandas
+python-multipart
+jinja2
 httpx
+# Data & Encoding
+pandas
 tiktoken
 typing-extensions
-
-# LangChain
+joblib
+scikit-learn
+# Pydantic (LangChain 호환)
 pydantic==2.11.1
 pydantic-settings==2.8.1
 pydantic_core==2.33.0
+# LangChain Core
 langchain==0.3.23
-langchain-chroma==0.2.3
-langchain-community==0.3.20
 langchain-core==0.3.52
+langchain-community==0.3.20
 langchain-openai==0.3.12
-langchain-text-splitters==0.3.8
 langchain-upstage==0.6.0
-
-# Chroma DB
+langchain-text-splitters==0.3.8
+langchain-chroma==0.2.3
+# Chroma Vector DB
 chromadb==0.6.3
-
 # OpenAI SDK
 openai==1.70.0
-
-#
-joblib
-jinja2
-scikit-learn
-python-multipart
-
+# DB & Crypto
+pymysql==1.1.1
 cryptography
-
-PyMySQL==1.1.1
