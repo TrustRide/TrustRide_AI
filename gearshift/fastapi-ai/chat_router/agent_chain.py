@@ -24,6 +24,7 @@ prompt = ChatPromptTemplate.from_messages([
         
         도구를 사용하지 않고 답하려고 하면 안 됩니다. 도구가 없으면 '죄송해요, 해당 질문에 대한 답변이 없어요 😢'라고만 하세요. 다른 말은 하지 마세요.
         또한 만약 관련 정보가 없다면 '죄송해요, 해당 질문에 대한 답변이 없어요 😢'라고만 답해주세요. 다른 말은 하지 마세요.
+        차량 시세 관련 질문은 답변을 상세하게 해주세요.
         """.strip()
     ),
     MessagesPlaceholder(variable_name="messages"),
