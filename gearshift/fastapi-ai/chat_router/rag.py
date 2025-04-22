@@ -30,10 +30,11 @@ def get_rag_response(info):
     df['fuel_type'] = df['fuel_type'].astype(str).str.strip()
     df['trim'] = df['trim'].astype(str).str.strip()
 
-    # 2. 입력 정보 정리
-    model = info.get('model', '').strip()
-    fuel = info.get('fuel_type', '').strip()
-    trim = info.get('trim', '').strip() if 'trim' in info else ''
+
+    # 2. 입력 정보 정리 (안전하게 None 처리)
+    model = (info.get('model') or '').strip()
+    fuel = (info.get('fuel_type') or '').strip()
+    trim = (info.get('trim') or '').strip()
     offer = float(info.get('offered_price'))
 
     # 3. 조건별 필터링
@@ -46,6 +47,7 @@ def get_rag_response(info):
             (df['fuel_type'] == fuel) &
             (df['trim'] == trim)
             ]
+
 
     # 우선순위 2: 모델 + 연료
     if filtered.empty and model and fuel:
