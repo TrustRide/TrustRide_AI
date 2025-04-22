@@ -23,7 +23,7 @@ class ParsedCarInfo(BaseModel):
     model: str
     fuel_type: Optional[str] = ""
     offered_price: str
-    trim: Optional[str] = ""
+    trim: Optional[str] = ""           
 
 @router.post("/price")
 def chat(query: UserQuery):
