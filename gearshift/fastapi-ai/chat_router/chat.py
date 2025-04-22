@@ -55,5 +55,13 @@ async def integrated_chat(query: UserQuery):
         logger.error('LLM이 도구를 사용하지 않고 마음대로 답변')
         return {"answer": "죄송해요, 해당 질문에 대한 답변이 없어요 😢"}
 
-    output_text = result["output"]
-    return {"answer": output_text}
+    # tool 실행 결과만 꺼내기
+    tool_outputs = result.get("intermediate_steps", []) #실행 결과가 없으면 [] 빈 리스트를 응답
+
+    for step in tool_outputs:
+        if isinstance(step, tuple):
+            _, tool_output = step
+            return {"answer": tool_output}
+
+    # tool 실행 결과가 빈 리스트라면
+    return {"answer": "죄송해요, 해당 질문에 대한 답변이 없어요 😢"}
