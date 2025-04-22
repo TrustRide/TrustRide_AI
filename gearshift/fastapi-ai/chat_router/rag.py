@@ -16,6 +16,8 @@ response_prompt = PromptTemplate.from_template("""
 이 차량의 평균 시세는 {avg_price}만원입니다.
 {verdict}
 위 정보를 바탕으로 사용자에게 친절하게 설명해주세요.
+중복되거나 뻔한 표현은 피하고, 핵심 정보만 간결하게 전달하세요.
+또한 "신중히 결정하세요", "전문가에게 물어보세요", "문의해 주세요" 같은 말은 하지 마세요.
 """)
 
 def get_rag_response(info):
