@@ -5,7 +5,7 @@ from recommend_router.recommend import router as recommend_router
 from ad_router.ad import router as ad_router
 from news_router.summary import router as news_router
 from news_router.similarity import router as similarity_router
-
+from predict_router.predict_router import router as predict_router
 
 app = FastAPI()
 
@@ -24,3 +24,4 @@ app.include_router(recommend_router)
 app.include_router(ad_router)
 app.include_router(news_router)  #  요약 라우터 추가
 app.include_router(similarity_router)
+app.include_router(predict_router)
