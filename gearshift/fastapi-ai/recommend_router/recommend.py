@@ -1,4 +1,3 @@
-# recommend_cluster_router.py
 from fastapi import FastAPI, Form
 from fastapi.responses import JSONResponse
 from fastapi.templating import Jinja2Templates
@@ -22,16 +21,16 @@ car_df = pd.read_csv("recommend_router/car_data_clustered.csv")
 
 # 연령대+성별 매핑표 (k=5 기준)
 age_gender_cluster_map = {
-    ("20", "남성"): 1,  # 사회초년생 ➔ 초저가 고주행차
-    ("20", "여성"): 1,  # 사회초년생 ➔ 초저가 고주행차
-    ("30", "남성"): 0,  # 실속형 중고차 선호
-    ("30", "여성"): 3,  # 준신차급 중형차 선호
-    ("40", "남성"): 3,  # 준신차급 중형차 or 신차급 SUV
-    ("40", "여성"): 3,  # 준신차급 중형차 선호
-    ("50", "남성"): 2,  # 신차급 SUV/대형차 선호
-    ("50", "여성"): 2,  # 신차급 SUV/대형차 선호
-    ("60", "남성"): 2,  # 신차급 SUV/대형차 (장거리 주행)
-    ("60", "여성"): 2,  # 신차급 SUV/대형차 (장거리 주행)
+    ("20", "남성"): 2,  # 현실적으로 초저가 중고차를 선호할 가능성 높음
+    ("20", "여성"): 2,  # 동일 — 오래된 연식, 초저가 우선 고려
+    ("30", "남성"): 1,  # 실속형 대중차 — 약간의 여유 있으면서도 가성비 중시
+    ("30", "여성"): 4,  # 안전성·유지비 중시 → 중저가+연식 오래됨
+    ("40", "남성"): 0,  # 여유 있는 프리미엄 지향 — 신차급 고가
+    ("40", "여성"): 3,  # 합리적이면서도 최신차 → 고급보다는 실속형 최신차
+    ("50", "남성"): 0,  # 고가, 짧은 주행거리 → 신차 수준
+    ("50", "여성"): 1,  # 실속형 최신 중고차에 가까운 군
+    ("60", "남성"): 3,  # 최신 연식이지만 중고가 → 관리 쉬운 차량
+    ("60", "여성"): 3,  # 실속형 최신차 → 부담 덜한 중고가 최신차
 }
 
 # 목적 → 예상 주행거리 맵핑
@@ -48,22 +47,21 @@ def parse_budget_range(budget_str):
             return 0, 99999  # "상관없음" → 무제한 허용
         elif '-' in budget_str:
             min_b, max_b = budget_str.split('-')
-            return int(min_b) - 500 , int(max_b) + 500  # 만원 단위 → 원화 단위
+            return int(min_b) - 250 , int(max_b) + 250  # 만원 단위 → 원화 단위
     except Exception as e:
         print(f"budget parsing error: {e}")
     return 0, 99999  # 파싱 실패하면 넓게 허용
 
 
 
+# 0번	신차급 고가 프리미엄 차량군
+# 1번	실속형 준신차, 주행거리 적당, 대중적인 구성
+# 2번	오래된 연식 + 높은 주행거리의 초저가 중고차
+# 3번	최신 연식이지만 고급형보다는 실속형에 가까운 중간 가격대
+# 4번	노후화된 중저가 차량, 주행거리 많음
 
-# 0번	중고차 (가성비 세단/SUV)
-# 1번	초저가 고주행차 (연습용/사회초년생)
-# 2번	신차급 SUV/대형차 (4000만원 이상)
-# 3번	준신차급 중형차/SUV (2000~3000만원대)
-# 4번	슈퍼카/럭셔리 수입차 (5000만원 이상)
 
 
-# recommend_by_cluster 함수 수정 부분
 
 def recommend_by_cluster(age, gender, budget_min, budget_max, brand_type, purpose):
 
@@ -85,15 +83,12 @@ def recommend_by_cluster(age, gender, budget_min, budget_max, brand_type, purpos
     elif brand_type == "수입":
         filtered = filtered[filtered['국산/수입'] == '수입']
 
-    # 🚗 목적(purpose)에 따라 주행거리 추가 필터링
+    #  목적(purpose)에 따라 주행거리 추가 필터링
     if purpose == "travel":
         filtered = filtered[filtered['주행거리_clean'] <= 100000]
     elif purpose == "nearby":
         pass
 
-    # ➡ 수정: 특정 나이대(30 - 남성) + 예산 5000 이상일 때만 4번 클러스터로 변경
-    if age == "30" and gender == "남성" and budget_min >= 5000:
-        cluster = 4
 
 
     if not filtered.empty:
