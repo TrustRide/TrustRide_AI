@@ -47,23 +47,12 @@ def get_rag_response(info):
             (df['trim'] == trim)
             ]
 
-    # 우선순위 2: 모델 + 연료
-    if filtered.empty and model and fuel:
-        filtered = df[
-            (df['model'] == model) &
-            (df['fuel_type'] == fuel)
-            ]
-
-    # 우선순위 3: 모델 + 트림
+    # 우선순위 2: 모델 + 트림
     if filtered.empty and model and trim:
         filtered = df[
             (df['model'] == model) &
             (df['trim'] == trim)
             ]
-
-    # 우선순위 4: 모델만
-    if filtered.empty and model:
-        filtered = df[df['model'] == model]
 
     # 4. 결과 없으면 사과 메시지
     if filtered.empty:
