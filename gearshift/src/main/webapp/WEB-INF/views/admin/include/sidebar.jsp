@@ -20,6 +20,7 @@
         <li><a href="${pageContext.request.contextPath}/adminNewsList">매거진관리</a></li>
          <li><a href="${pageContext.request.contextPath}/admin/userList">회원관리</a></li>
          <li><a href="${pageContext.request.contextPath}/admin/manage">관리자정보</a></li>
+        <li><a href="${pageContext.request.contextPath}/admin/visuals">데이터시각화</a></li>
     </ul>
 </aside>
 
