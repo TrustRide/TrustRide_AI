@@ -1,7 +1,7 @@
 from langchain_upstage import ChatUpstage
 from langchain.agents import create_tool_calling_agent, AgentExecutor
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from .tools import PriceTool, TermsTool
+from .tools import PriceTool, TermsTool, StrictMessageTool
 from . import settings
 
 
@@ -9,8 +9,6 @@ llm = ChatUpstage(
     model="solar-1-mini-chat",
     api_key=settings.LLM_API_KEY,
 )
-
-tools = [PriceTool, TermsTool]
 
 prompt = ChatPromptTemplate.from_messages([
     (
@@ -36,11 +34,21 @@ prompt = ChatPromptTemplate.from_messages([
     MessagesPlaceholder(variable_name="agent_scratchpad"),
 ])
 
-agent = create_tool_calling_agent(llm=llm, tools=tools, prompt=prompt)
-agent_executor = AgentExecutor(
-    agent=agent,
-    tools=tools,
-    verbose=True,
-    handle_parsing_errors=False,
-    return_intermediate_steps=True,  # 중간 결과 받기
-)
+def get_agent_executor(original_message: str) -> AgentExecutor:
+    price = StrictMessageTool(
+        name="PriceTool",
+        description="차량 시세 질문 처리",
+        tool_func=PriceTool,
+        original_message=original_message
+    )
+
+    terms = StrictMessageTool(
+        name="TermsTool",
+        description="가입, 해지, 약관 등 처리",
+        tool_func=TermsTool,
+        original_message=original_message
+    )
+
+    tools = [price, terms]
+    agent = create_tool_calling_agent(llm=llm, tools=tools, prompt=prompt)
+    return AgentExecutor(agent=agent, tools=tools, verbose=True)
