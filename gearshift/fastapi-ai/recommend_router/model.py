@@ -3,16 +3,14 @@ import pandas as pd
 import re
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import MinMaxScaler
+
 import joblib
 
-# ------------------------------------
 # 1. 데이터 로드
-# ------------------------------------
 df = pd.read_csv("car_data.csv")
 
-# ------------------------------------
 # 2. 데이터 전처리
-# ------------------------------------
 
 # 가격 전처리
 df['가격'] = (
@@ -41,26 +39,23 @@ def clean_mileage(value):
     return value
 
 df['주행거리_clean'] = df['주행거리'].apply(clean_mileage)
+df['국산여부'] = df['국산/수입'].map({'국산': 1, '수입': 0})
+
 
 # 사용할 컬럼만
-df = df.dropna(subset=['가격', '연식_clean', '주행거리_clean'])
-X = df[['가격', '연식_clean', '주행거리_clean']]
+base_columns = ['가격', '연식_clean', '주행거리_clean']
+X = df[base_columns]
 
-# ------------------------------------
+
 # 3. 표준화 (StandardScaler)
-# ------------------------------------
-scaler = StandardScaler()
+scaler = MinMaxScaler()
 X_scaled = scaler.fit_transform(X)
 
-# ------------------------------------
 # 4. KMeans 군집화
-# ------------------------------------
 kmeans = KMeans(n_clusters=5, random_state=42, n_init=10)
 df['cluster_label'] = kmeans.fit_predict(X_scaled)
 
-# ------------------------------------
 # 5. 결과 저장
-# ------------------------------------
 joblib.dump(kmeans, 'kmeans_model.pkl')       # 모델 저장
 joblib.dump(scaler, 'scaler.pkl')              # 스케일러 저장
 df.to_csv('car_data_clustered.csv', index=False)  # 군집 컬럼 포함 데이터 저장
