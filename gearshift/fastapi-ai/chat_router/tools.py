@@ -1,4 +1,4 @@
-from langchain_core.tools import tool
+from langchain_core.tools import BaseTool, tool
 from . import extractor, rag, terms
 import logging
 
@@ -21,3 +21,15 @@ def TermsTool(message: str) -> str:
     logger.info(f'***** context_docs *****\n{context_docs}')
     result = terms.chain.invoke({"question": message, "context": context_docs})
     return result
+
+class StrictMessageTool(BaseTool):
+    name: str
+    description: str
+    tool_func: callable
+    original_message: str  # query.message를 여기에 담아둠
+
+    def _run(self, *args, **kwargs) -> str:
+        return self.tool_func(self.original_message)
+
+    async def _arun(self, *args, **kwargs) -> str:
+        return self.tool_func(self.original_message)

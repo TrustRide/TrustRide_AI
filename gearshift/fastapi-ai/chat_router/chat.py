@@ -1,9 +1,8 @@
 from fastapi import APIRouter
 from typing import Optional
 from pydantic import BaseModel
-from . import extractor, rag, terms
+from . import extractor, rag, terms, agent_chain
 from langchain_core.messages import HumanMessage
-from .agent_chain import agent_executor
 import logging
 
 logger = logging.getLogger("chat_logger")
@@ -48,20 +47,13 @@ async def ask_question(query: UserQuery):
 ### 통합 ###
 @router.post("/integrate")
 async def integrated_chat(query: UserQuery):
-    result = await agent_executor.ainvoke({"messages": [HumanMessage(content=query.message)]})
+    original_msg = query.message
+    agent_executor = agent_chain.get_agent_executor(original_msg)
+    result = await agent_executor.ainvoke({"messages": [HumanMessage(content=original_msg)]})
 
     # LLM이 tool을 쓰지 않고 LLM의 생각으로 답변했는지 체크
     if isinstance(result, str):
         logger.error('LLM이 도구를 사용하지 않고 마음대로 답변')
         return {"answer": "죄송해요, 해당 질문에 대한 답변이 없어요 😢"}
 
-    # tool 실행 결과만 꺼내기
-    tool_outputs = result.get("intermediate_steps", []) #실행 결과가 없으면 [] 빈 리스트를 응답
-
-    for step in tool_outputs:
-        if isinstance(step, tuple):
-            _, tool_output = step
-            return {"answer": tool_output}
-
-    # tool 실행 결과가 빈 리스트라면
-    return {"answer": "죄송해요, 해당 질문에 대한 답변이 없어요 😢"}
+    return {"answer": result["output"]}
