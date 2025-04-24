@@ -53,8 +53,8 @@ for cluster_num in sorted(y.unique()):
     )
 
 plt.title('PCA 기반 자동차 클러스터 시각화')
-plt.xlabel('PCA 1 (가격, 연식, 주행거리 등)')
-plt.ylabel('PCA 2')
+plt.xlabel('PCA 1 (신차급에 가까운 차량)')
+plt.ylabel('PCA 2 (비표준적인 조합의 차량)')
 plt.xlim(x_min - x_margin, x_max + x_margin)
 plt.ylim(y_min - y_margin, y_max + y_margin)
 plt.legend()
