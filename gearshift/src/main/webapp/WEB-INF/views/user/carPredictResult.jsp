@@ -4,6 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
+
 <html>
 <head>
   <meta charset="UTF-8">
@@ -30,7 +31,7 @@
 <body>
 
 <div class="result-box">
-  <h2>📊 중고차 예측 결과</h2>
+  <h2>중고차 예측 결과</h2>
 
   <p><strong>모델명 및 트림:</strong> <span class="highlight"><c:out value="${modelSummary}" /></span></p>
   <p><strong>예측된 차량 가격:</strong> <span class="highlight"><fmt:formatNumber value="${predictedPrice}" type="number" /> 원</span></p>

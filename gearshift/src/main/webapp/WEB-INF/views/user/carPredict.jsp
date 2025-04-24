@@ -8,6 +8,8 @@
 <c:set var="vehicleTypeList" value="${fn:split('CUV,SUV,세단,소형,픽업트럭', ',')}" />
 <c:set var="modelNames" value="${fn:split('카니발 4세대,더 뉴 그랜저 IG,쏘렌토 4세대,그랜저 IG,아반떼 (CN7),K5 3세대,스포티지 4세대,팰리세이드,싼타페 TM,모하비 더 마스터,제네시스 G80,GV70,GV80,K7 프리미어,그랜저 HG,쏘렌토 3세대,쏘나타 DN8,투싼 NX4,스포티지 5세대', ',')}" />
 <c:set var="trimKeywords" value="${fn:split ('디젤,2.0,프리미엄,4WD,하이리무진,2WD,럭셔리,노블레스,시그니처,스페셜,플러스,1.6,2.5,3.3,GDI,터보,스탠다드,밸류,베이직,프레스티지,LPI,LPG,가솔린,9인승,카고,5인승,SE,LE,스마트,AWD', ',')}" />
+
+
 <html>
 <head>
   <title>중고차 가격 예측 시스템</title>
