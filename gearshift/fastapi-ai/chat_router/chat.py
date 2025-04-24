@@ -24,24 +24,24 @@ class ParsedCarInfo(BaseModel):
     offered_price: str
     trim: Optional[str] = ""           
 
-@router.post("/price")
-def chat(query: UserQuery):
-    parsed = extractor.extract_info_with_llm(query.message)
-    answer = rag.get_rag_response(parsed)
-    return {
-        "parsed_info": parsed,
-        "answer": answer
-    }
+# @router.post("/price")
+# def chat(query: UserQuery):
+#     parsed = extractor.extract_info_with_llm(query.message)
+#     answer = rag.get_rag_response(parsed)
+#     return {
+#         "parsed_info": parsed,
+#         "answer": answer
+#     }
 
 
 ### 약관 ###
-@router.post("/term")
-async def ask_question(query: UserQuery):
-    query = query.message
-    context = terms.retriever.invoke(query)
-    context_docs = context[0].page_content if context else ""
-    result = terms.chain.invoke({"question": query, "context": context_docs})
-    return {"answer": result}
+# @router.post("/term")
+# async def ask_question(query: UserQuery):
+#     query = query.message
+#     context = terms.retriever.invoke(query)
+#     context_docs = context[0].page_content if context else ""
+#     result = terms.chain.invoke({"question": query, "context": context_docs})
+#     return {"answer": result}
 
 
 ### 통합 ###
