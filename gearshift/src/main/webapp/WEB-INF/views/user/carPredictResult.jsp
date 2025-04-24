@@ -49,7 +49,7 @@
     </c:if>
   </div>
 
-  <a href="${pageContext.request.contextPath}/carpredict" class="back">← 다시 입력하기</a>
+  <a href="${pageContext.request.contextPath}/user/carpredict" class="back">← 다시 입력하기</a>
 </div>
 
 </body>
