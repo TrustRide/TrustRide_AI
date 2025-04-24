@@ -1,2 +1,0 @@
-# txt 파일은 항상 LF 줄바꿈 유지
-*.txt text eol=lf

@@ -43,7 +43,7 @@
 <div class="form-container">
   <h2>🚘 중고차 가격 및 손상 예측</h2>
 
-  <form method="post" action="/gearshift/carpredict" enctype="multipart/form-data">
+  <form method="post" action="/gearshift/user/carpredict" enctype="multipart/form-data">
 
     <!-- 브랜드 선택 -->
     <label>브랜드 선택</label>

@@ -17,27 +17,16 @@ import traceback
 router = APIRouter(prefix="/carpredict", tags=["손상 및 가격 예측"])
 
 #  절대 경로 설정
-import os
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MODEL_DIR = os.path.join(BASE_DIR, "predict_router", "models")
-PRICE_MODEL_PATH = os.path.join(MODEL_DIR, "lgbm_price_model.txt")
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MODEL_DIR = os.path.join(BASE_DIR, "predict_router", "models")
-
-#  업로드 디렉토리 설정
-UPLOAD_DIR = "C:/upload"
-os.makedirs(UPLOAD_DIR, exist_ok=True)  # 디렉토리 없으면 생성
-# # windows 환경이 아니면 아래 코드 주석 해제하고 위 두줄 주석처리하고 사용하기
-# UPLOAD_DIR = os.path.join(BASE_DIR, "uploads")
-# os.makedirs(UPLOAD_DIR, exist_ok=True)
+UPLOAD_DIR = os.path.join(BASE_DIR, "uploads")
+os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 #  경로 디버깅용 출력 (필요시 주석 제거)
 # print(f"MODEL_DIR: {MODEL_DIR}")
 # print(f"UPLOAD_DIR: {UPLOAD_DIR}")
 
 #  모델 파일 경로
-
 DAMAGE_MODEL_PATH = os.path.join(MODEL_DIR, "damage_model.pth")
 PRICE_MODEL_PATH = os.path.join(MODEL_DIR, "lgbm_price_model.txt")
 SCALER_PATH = os.path.join(MODEL_DIR, "scaler.pkl")
