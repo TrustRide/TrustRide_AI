@@ -12,6 +12,7 @@
 
         <nav>
             <ul>
+                <li><a href="${pageContext.request.contextPath}/carpredict">내차팔기</a></li>
                 <li><a href="${pageContext.request.contextPath}/userList">내차사기</a></li>
                 <li><a href="${pageContext.request.contextPath}/review">상품리뷰</a></li>
                 <li><a href="/gearshift/newsList">매거진</a></li>
