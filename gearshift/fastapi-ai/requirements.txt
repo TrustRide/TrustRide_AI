@@ -29,14 +29,3 @@ openai==1.70.0
 # DB & Crypto
 pymysql==1.1.1
 cryptography
-
-
-#heehyun
-lightgbm==3.3.5
-pillow
-numpy
-scipy
-starlette
-torch
-torchvision
-torchaudio
