@@ -20,17 +20,6 @@ TrustRide AI는 차량 관련 인공지능 서비스를 제공하는 웹 애플�
   - Spring Legacy + JSP (기존 시스템 연동)
   - MySQL, MyBatis (DB 및 ORM)
 
-## 프로젝트 구조
-
-TrustRide_AI-main/
-├── chatbot-project/           # 챗봇 프론트엔드 프로젝트
-│   └── chat-design/           # 챗봇 UI 구성 (React, Tailwind)
-├── fastapi-ai/                # FastAPI 백엔드 (AI 모델 및 API)
-├── spring-legacy/             # 기존 Spring Legacy 서버 (JSP 기반)
-├── README.md                  # 프로젝트 설명 파일
-├── .idea/                     # IntelliJ 프로젝트 설정
-└── 기타 설정 파일
-
 
 ## 설치 및 실행 방법
 
