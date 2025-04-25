@@ -22,7 +22,7 @@ torch
 torchvision
 torchaudio
 
-# Pydantic (LangChain 호환)
+# Pydantic
 pydantic==2.11.1
 pydantic-settings==2.8.1
 pydantic_core==2.33.0
@@ -45,6 +45,8 @@ openai==1.70.0
 # DB & Crypto
 pymysql==1.1.1
 cryptography
+
+
 
 
 
