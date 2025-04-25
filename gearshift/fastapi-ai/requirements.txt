@@ -36,7 +36,6 @@ pillow
 numpy
 scipy
 starlette
-torch
-torchvision
-torchaudio
+
+
 
