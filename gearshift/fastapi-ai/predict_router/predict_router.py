@@ -20,7 +20,7 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 # 모델 파일 경로
 DAMAGE_MODEL_PATH = "predict_router/models/damage_model.pth"
-PRICE_MODEL_PATH = "predict_router/models/lgbm_price_model.json"
+PRICE_MODEL_PATH = "predict_router/models/lgbm_price_model.txt"
 SCALER_PATH = "predict_router/models/scaler.pkl"
 VECTORIZER_PATH = "predict_router/models/vectorizer.pkl"
 BRAND_ENCODER_PATH = "predict_router/models/brand_encoder.pkl"
