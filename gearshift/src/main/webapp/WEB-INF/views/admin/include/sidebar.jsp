@@ -12,7 +12,6 @@
          <li><a href="${pageContext.request.contextPath}/admin/orderList">주문관리</a></li>
 
         <li><a href="${pageContext.request.contextPath}/admin/carAd">차량광고생성기</a></li>
-        <li><a href="${pageContext.request.contextPath}/admin/manage">관리자정보</a></li>
 	     <li><a href="${pageContext.request.contextPath}/admin/inquiry">문의관리</a></li>
          <li><a href="${pageContext.request.contextPath}/admin/coupons/list">쿠폰관리</a></li>
 
