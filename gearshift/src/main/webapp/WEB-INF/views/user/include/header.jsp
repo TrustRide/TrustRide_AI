@@ -11,8 +11,19 @@
         </div>
 
         <nav>
-            <ul>
-                <li><a href="${pageContext.request.contextPath}/carpredict">내차팔기</a></li>
+            <ul style="position: relative;">
+                <li style="position: relative; display: inline-block;">
+                    <a href="#" id="sellCarMenu" style="cursor:pointer;">내차팔기</a>
+
+                    <!-- 내차팔기 메뉴에 드롭다운 메뉴 추가 -->
+                    <div id="sellCarDropDown" class="dropdown-content">
+                        <ul>
+                            <li><a href="${pageContext.request.contextPath}/sellcar">&#128663;내차 팔면 얼마일까?</a></li>
+                        </ul>
+                    </div>
+                </li>
+
+
                 <li><a href="${pageContext.request.contextPath}/userList">내차사기</a></li>
                 <li><a href="${pageContext.request.contextPath}/review">상품리뷰</a></li>
                 <li><a href="/gearshift/newsList">매거진</a></li>
@@ -28,6 +39,8 @@
                     <li><a href="${pageContext.request.contextPath}/register">회원가입</a></li>
                 </c:if>
             </ul>
+
+
         </nav>
 
         <!-- 검색 input, form 없이 처리 -->
@@ -41,6 +54,9 @@
         </c:if>
     </div>
 </header>
+
+<!-- jquery 사용 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
     // 로그아웃 기능 (POST + CSRF)
@@ -73,4 +89,20 @@
             window.location.href = url;
         }
     }
+
+    // 내차팔기 클릭시 드롭다운 메뉴 토글
+
+    $(document).ready(function(){
+        // 마우스 올리면 드롭다운 보이기
+        $("#sellCarMenu").mouseenter(function(){
+            $("#sellCarDropDown").stop(true, true).fadeIn(150);
+        });
+
+        // 메뉴 전체를 감싸는 li 영역을 벗어나면 드롭다운 숨기기
+        $("#sellCarMenu").closest("li").mouseleave(function(){
+            $("#sellCarDropDown").stop(true, true).fadeOut(150);
+        });
+    });
+
 </script>
+
