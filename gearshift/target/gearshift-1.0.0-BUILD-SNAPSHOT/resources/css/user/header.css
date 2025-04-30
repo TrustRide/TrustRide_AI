@@ -92,6 +92,46 @@ nav a {
 
 
 
+/* 내차팔기 드롭다운 메뉴 전용 스타일 */
+
+
+
+/* 드롭다운 기본 상태는 숨김 */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    min-width: 200px;
+    border: 1px solid #ccc;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+    z-index: 999;
+}
+
+/* 부모 li에 마우스를 올리면 .dropdown-content 보이기 */
+li:hover > .dropdown-content {
+    display: block;
+}
+
+.dropdown-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown-content ul li {
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.dropdown-content ul li:hover {
+    background-color: #f9f9f9;
+}
+
+
+
+
 
 
 

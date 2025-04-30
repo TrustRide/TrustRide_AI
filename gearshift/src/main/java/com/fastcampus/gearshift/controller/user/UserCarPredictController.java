@@ -121,6 +121,12 @@ public class UserCarPredictController {
 
         return "user/carPredictResult";
     }
+
+    @GetMapping("/sellcar")
+    public String showSellCarForm() {
+        return "user/sellCar";
+    }
+
 }
 
 
